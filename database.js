@@ -139,7 +139,7 @@ async function initDatabase() {
 
   // Seed default settings
   const defaultSettings = {
-    site_name: 'Название магазина',
+    site_name: 'Painting by Number',
     site_description: 'Rəqəmlərlə rəsmlər',
     admin_key: 'admin123',
     phone: '+994 (50) 123-45-67',

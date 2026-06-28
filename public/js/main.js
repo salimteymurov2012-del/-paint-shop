@@ -9,7 +9,7 @@ let currentLang = localStorage.getItem('shop_lang') || 'az';
 // =========== TRANSLATIONS ===========
 const lang = {
   az: {
-    title: 'Rəqəmlərlə rəsmlər',
+    title: 'Painting by Number',
     preloader: 'İlham yaradılır...',
     nav_catalog: 'Kataloq', nav_about: 'Haqqımızda', nav_contact: 'Əlaqə',
     hero_title: 'Yaradıcılığa ilham tap',
@@ -54,7 +54,7 @@ const lang = {
     contact_phone: 'Telefon', contact_email: 'Email', contact_address: 'Ünvan', contact_social: 'Sosial şəbəkələr'
   },
   ru: {
-    title: 'Картины по номерам',
+    title: 'Painting by Number',
     preloader: 'Создаём вдохновение...',
     nav_catalog: 'Каталог', nav_about: 'О нас', nav_contact: 'Контакты',
     hero_title: 'Создай собственный шедевр',
@@ -214,7 +214,7 @@ async function loadSettings() {
     if (allSettings.email) document.getElementById('footer-email').textContent = allSettings.email;
     if (allSettings.address) document.getElementById('footer-address').textContent = allSettings.address;
     // Set dynamic site name everywhere
-    const name = allSettings.site_name || 'Магазин';
+    const name = allSettings.site_name || 'Painting by Number';
     document.getElementById('logo-text').textContent = name;
     document.getElementById('footer-logo-text').textContent = name;
     renderSocialLinks();
