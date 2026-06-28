@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title data-lang="title">Rəqəmlərlə rəsmlər</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div id="app">
+  <div id="preloader">
+    <div class="preloader-spiral"></div>
+    <p data-lang="preloader">İlham yaradılır...</p>
+  </div>
+
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- Header -->
+  <header id="header">
+    <div class="container header-inner">
+      <a href="#" class="logo" onclick="showSection('home')">
+        <span class="logo-icon">✦</span>
+        <span class="logo-text" id="logo-text">Название</span>
+      </a>
+      <nav class="nav-menu">
+        <a href="#" onclick="showSection('catalog')" data-lang="nav_catalog">Kataloq</a>
+        <a href="#" onclick="showSection('about')" data-lang="nav_about">Haqqımızda</a>
+        <a href="#" onclick="showSection('contact')" data-lang="nav_contact">Əlaqə</a>
+      </nav>
+      <div class="header-actions">
+        <div class="lang-switcher">
+          <button class="lang-btn active" data-lang-code="az" onclick="setLang('az')">AZ</button>
+          <button class="lang-btn" data-lang-code="ru" onclick="setLang('ru')">RU</button>
+        </div>
+        <button class="cart-btn" onclick="showSection('cart')">
+          <span class="cart-icon">🛒</span>
+          <span class="cart-count" id="cart-count">0</span>
+        </button>
+        <button class="menu-toggle" onclick="toggleMobileMenu()">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HOME -->
+    <section id="section-home" class="section active">
+      <div class="hero" id="hero">
+        <div class="hero-bg">
+          <div class="swirl swirl-1"></div>
+          <div class="swirl swirl-2"></div>
+          <div class="swirl swirl-3"></div>
+        </div>
+        <div class="hero-content">
+          <h1 class="hero-title" data-lang="hero_title">Yaradıcılığa ilham tap</h1>
+          <p class="hero-subtitle" data-lang="hero_subtitle">Rəqəmlərlə rəsm dəstləri — yaradıcılığı zövqə çevirir.</p>
+          <div class="hero-cta">
+            <a href="#" class="btn btn-primary" onclick="showSection('catalog')" data-lang="hero_btn1">Rəsm seç</a>
+            <a href="#" class="btn btn-outline" onclick="showSection('about')" data-lang="hero_btn2">Daha çox</a>
+          </div>
+        </div>
+        <div class="hero-brushes">
+          <div class="brush-stroke brush-1"></div>
+          <div class="brush-stroke brush-2"></div>
+          <div class="brush-stroke brush-3"></div>
+        </div>
+      </div>
+
+      <div class="banners-slider" id="banners-slider" style="display:none">
+        <div class="container">
+          <div class="banners-track" id="banners-track"></div>
+        </div>
+      </div>
+
+      <div class="features">
+        <div class="container">
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="feature-icon">🎨</div>
+              <h3 data-lang="f1_title">Premium keyfiyyət</h3>
+              <p data-lang="f1_desc">Təbii kətan və parlaq boyalar</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🚚</div>
+              <h3 data-lang="f2_title">Sürətli çatdırılma</h3>
+              <p data-lang="f2_desc">Bakı üzrə 1-3 gün, ölkə üzrə 3-7 gün</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">💫</div>
+              <h3 data-lang="f3_title">İstənilən səviyyə</h3>
+              <p data-lang="f3_desc">Yeni başlayandan peşəkara qədər</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🖼️</div>
+              <h3 data-lang="f4_title">Hazır interyer</h3>
+              <p data-lang="f4_desc">Bitirdikdən dərhal sonra</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="home-products"></div>
+    </section>
+
+    <!-- CATALOG -->
+    <section id="section-catalog" class="section">
+      <div class="page-header">
+        <div class="container">
+          <h1 data-lang="catalog_title">Rəsm kataloqu</h1>
+          <div class="catalog-controls">
+            <div class="catalog-filters">
+              <div class="filter-group">
+                <select id="filter-category" onchange="applyFilters()"></select>
+                <select id="filter-difficulty" onchange="applyFilters()"></select>
+                <select id="filter-sort" onchange="applyFilters()"></select>
+              </div>
+              <div class="search-box">
+                <input type="text" id="search-input" data-lang-placeholder="search_placeholder" placeholder="Axtarış..." oninput="applyFilters()">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="products-grid" id="catalog-grid"></div>
+        <div id="catalog-empty" class="empty-state" style="display:none">
+          <p data-lang="catalog_empty">Heç nə tapılmadı</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRODUCT DETAIL -->
+    <section id="section-product" class="section">
+      <div class="container">
+        <button class="back-btn" onclick="showSection('catalog')" data-lang="back_catalog">← Kataloqa qayıt</button>
+        <div id="product-detail"></div>
+      </div>
+    </section>
+
+    <!-- CART -->
+    <section id="section-cart" class="section">
+      <div class="page-header">
+        <div class="container">
+          <h1 data-lang="cart_title">Səbət</h1>
+        </div>
+      </div>
+      <div class="container">
+        <div id="cart-content"></div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="section-about" class="section">
+      <div class="page-header">
+        <div class="container">
+          <h1 data-lang="about_title">Haqqımızda</h1>
+        </div>
+      </div>
+      <div class="container">
+        <div class="about-content">
+          <div class="about-text" id="about-text"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="section-contact" class="section">
+      <div class="page-header">
+        <div class="container">
+          <h1 data-lang="contact_title">Əlaqə</h1>
+        </div>
+      </div>
+      <div class="container">
+        <div class="contact-content" id="contact-content"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer id="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-logo">
+            <span class="logo-icon">✦</span> <span id="footer-logo-text">Название</span>
+          </div>
+          <p data-lang="footer_desc">Rəqəmlərlə rəsmlər — yaradıcılığı zövqə çevirir.</p>
+          <div class="social-links" id="social-links">
+            <a href="#" target="_blank" class="social-link">VK</a>
+            <a href="#" target="_blank" class="social-link">TG</a>
+            <a href="#" target="_blank" class="social-link">WA</a>
+            <a href="#" target="_blank" class="social-link">IG</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4 data-lang="footer_catalog">Kataloq</h4>
+          <div id="footer-categories"></div>
+        </div>
+        <div class="footer-col">
+          <h4 data-lang="footer_info">Məlumat</h4>
+          <a href="#" onclick="showSection('about')" data-lang="footer_about">Haqqımızda</a>
+          <a href="#" onclick="showSection('contact')" data-lang="footer_contact">Əlaqə</a>
+          <a href="#" onclick="showSection('delivery')" data-lang="footer_delivery">Çatdırılma</a>
+        </div>
+        <div class="footer-col">
+          <h4 data-lang="footer_contacts">Əlaqə</h4>
+          <p id="footer-phone">+994 (50) 123-45-67</p>
+          <p id="footer-email">info@example.az</p>
+          <p id="footer-address">Bakı, Nizami küç., 1</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p data-lang="footer_copyright">&copy; 2026. Bütün hüquqlar qorunur.</p>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<div id="modal" class="modal" onclick="closeModal(event)">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<script src="/js/particles.js"></script>
+<script src="/js/main.js"></script>
+</body>
+</html>
