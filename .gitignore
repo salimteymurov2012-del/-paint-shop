@@ -3,6 +3,8 @@ uploads/*
 !uploads/.gitkeep
 data/*.db
 .env
+!.env.example
+*.db
 .DS_Store
 Thumbs.db
 desktop.ini
