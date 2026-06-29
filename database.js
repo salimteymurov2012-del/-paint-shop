@@ -297,10 +297,6 @@ async function queryCount(sql, params) {
   const { count } = await q;
   return [{ c: count || 0 }];
 }
-  }
-  const { count } = await q;
-  return [{ c: count || 0 }];
-}
 
 async function queryCountDistinct(sql, params) {
   const table = getTableFromSQL(sql);
