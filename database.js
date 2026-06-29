@@ -36,12 +36,9 @@ async function initDatabase() {
   const projectRef = match[1];
 
   pool = new Pool({
-    host: `db.${projectRef}.supabase.co`,
-    database: 'postgres',
-    user: 'postgres',
-    password: supabaseServiceKey,
-    port: 5432,
+    connectionString: `postgresql://postgres:${encodeURIComponent(process.env.SUPABASE_DB_PASSWORD || supabaseServiceKey)}@db.${projectRef}.supabase.co:5432/postgres`,
     ssl: { rejectUnauthorized: false },
+    family: 4,
     max: 10,
     idleTimeoutMillis: 30000,
   });

@@ -1,9 +1,7 @@
-// Миграция данных из SQLite (shop.db) в Supabase PostgreSQL
 const initSqlJs = require('sql.js');
 const fs = require('fs');
 const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
-const { Pool } = require('pg');
 
 require('dotenv').config();
 
@@ -13,13 +11,11 @@ const UPLOADS_DIR = path.join(__dirname, 'uploads');
 async function migrate() {
   console.log('=== Миграция данных из SQLite в Supabase ===\n');
 
-  // 1. Проверяем наличие shop.db
   if (!fs.existsSync(DB_PATH)) {
-    console.log('❌ shop.db не найден. Создайте базу данных, запустив сервер локально.');
+    console.log('❌ shop.db не найден.');
     process.exit(1);
   }
 
-  // 2. Проверяем переменные окружения
   const supabaseUrl = process.env.SUPABASE_URL;
   const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
@@ -28,37 +24,14 @@ async function migrate() {
     process.exit(1);
   }
 
-  // 3. Подключаемся к SQLite
   console.log('📦 Чтение SQLite базы...');
   const SQL = await initSqlJs();
   const buffer = fs.readFileSync(DB_PATH);
   const sqliteDb = new SQL.Database(buffer);
 
-  // 4. Подключаемся к Supabase
   console.log('☁️  Подключение к Supabase...');
-  const match = supabaseUrl.match(/https?:\/\/(.+)\.supabase\.co/);
-  const projectRef = match[1];
-
-  const pool = new Pool({
-    host: `db.${projectRef}.supabase.co`,
-    database: 'postgres',
-    user: 'postgres',
-    password: supabaseServiceKey,
-    port: 5432,
-    ssl: { rejectUnauthorized: false },
-  });
-
   const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-  // 5. Создаём таблицы
-  console.log('🏗️  Создание таблиц...');
-  const createSQL = fs.readFileSync(path.join(__dirname, 'supabase-schema.sql'), 'utf8');
-  const statements = createSQL.split(';').filter(s => s.trim().length > 0 && !s.trim().startsWith('--'));
-  for (const stmt of statements) {
-    try { await pool.query(stmt); } catch (e) { console.error('  ⚠️', e.message); }
-  }
-
-  // 6. Мигрируем каждую таблицу
   const tables = ['settings', 'categories', 'products', 'product_images', 'banners', 'orders', 'reviews', 'promocodes', 'admin_sessions'];
 
   for (const table of tables) {
@@ -71,40 +44,40 @@ async function migrate() {
 
     const columns = rows[0].columns;
     const values = rows[0].values;
+    let success = 0;
+    let errors = 0;
 
     for (const row of values) {
       const obj = {};
       columns.forEach((col, i) => { obj[col] = row[i]; });
 
-      const colList = columns.join(', ');
-      const paramList = columns.map((_, i) => `$${i + 1}`).join(', ');
-      const updateList = columns.map(col => `${col} = EXCLUDED.${col}`).join(', ');
+      const { error } = await supabase.from(table).upsert(obj, { onConflict: columns[0] });
 
-      try {
-        await pool.query(
-          `INSERT INTO ${table} (${colList}) VALUES (${paramList}) ON CONFLICT (${columns[0]}) DO UPDATE SET ${updateList}`,
-          row
-        );
-      } catch (e) {
-        console.log(`  ⚠️  Ошибка записи: ${e.message}`);
+      if (error) {
+        console.log(`  ⚠️  Ошибка записи: ${error.message}`);
+        errors++;
+      } else {
+        success++;
       }
     }
-    console.log(`  → ${values.length} записей перенесено`);
+    console.log(`  → ${success} записей перенесено${errors ? `, ${errors} ошибок` : ''}`);
   }
 
-  // 7. Загружаем изображения в Supabase Storage
   console.log('\n🖼️  Загрузка изображений в Supabase Storage...');
 
-  // Создаём bucket если нет
   const { data: buckets } = await supabase.storage.listBuckets();
-  const bucketExists = buckets.some(b => b.name === 'products');
+  const bucketExists = buckets && buckets.some(b => b.name === 'products');
   if (!bucketExists) {
-    await supabase.storage.createBucket('products', {
+    const { error: bucketError } = await supabase.storage.createBucket('products', {
       public: true,
       allowedMimeTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'],
       fileSizeLimit: 10485760,
     });
-    console.log('  ✅ Bucket "products" создан');
+    if (bucketError) {
+      console.log(`  ⚠️  Ошибка создания bucket: ${bucketError.message}`);
+    } else {
+      console.log('  ✅ Bucket "products" создан');
+    }
   } else {
     console.log('  ✅ Bucket "products" уже существует');
   }
@@ -135,8 +108,6 @@ async function migrate() {
     console.log('  → Папка uploads не найдена, пропускаем');
   }
 
-  // 8. Закрываем соединения
-  await pool.end();
   sqliteDb.close();
 
   console.log('\n✅ Миграция завершена!');
