@@ -176,7 +176,7 @@ async function querySimple(sql, params) {
 }
 
 async function queryProducts(sql, params) {
-  let q = supabase.from('products').select('*, categories!left(name)');
+  let q = supabase.from('products').select('*');
   const whereClause = sql.match(/WHERE\s+(.+?)(?:\s+ORDER\s+BY|\s+LIMIT|\s*$)/is);
   let pIdx = 0;
 
@@ -185,7 +185,6 @@ async function queryProducts(sql, params) {
     for (const c of conds) {
       const t = c.trim(); if (t === '1=1' || t === '(1=1)') continue;
 
-      // OR conditions with LIKE (search)
       if (t.includes('OR') && t.includes('LIKE')) {
         const cols = t.match(/LOWER\((\w+)\)/g);
         if (cols && params[pIdx] !== undefined) {
@@ -200,18 +199,9 @@ async function queryProducts(sql, params) {
       if (!m) continue;
       const col = m[1]; const op = m[2];
 
-      // Check if value is a literal in SQL
       const litMatch = t.match(/=\s*'([^']*)'/);
-      if (litMatch) {
-        const val = litMatch[1];
-        if (op === '=') q = q.eq(col, val);
-        continue;
-      }
-
-      if (t.includes('visible') && t.includes('= 1')) {
-        q = q.eq('visible', 1); continue;
-      }
-
+      if (litMatch) { if (op === '=') q = q.eq(col, litMatch[1]); continue; }
+      if (t.includes('visible') && t.includes('= 1')) { q = q.eq('visible', 1); continue; }
       if (params[pIdx] !== undefined) {
         if (op === '=') q = q.eq(col, params[pIdx]);
         else if (op === '!=' || op === '<>') q = q.neq(col, params[pIdx]);
@@ -232,7 +222,11 @@ async function queryProducts(sql, params) {
   if (limit) q = q.limit(limit);
 
   const { data } = await q;
-  return (data || []).map(r => ({ ...r, category_name: r.categories?.name || null, categories: undefined }));
+  if (!data?.length) return [];
+
+  const { data: cats } = await supabase.from('categories').select('id,name');
+  const catMap = {}; if (cats) cats.forEach(c => { catMap[c.id] = c.name; });
+  return data.map(r => ({ ...r, category_name: catMap[r.category_id] || null }));
 }
 
 async function queryHomeProducts(sql, params) {
@@ -265,7 +259,7 @@ async function queryCategoriesWithCount(sql, params) {
 }
 
 async function queryReviews(sql, params) {
-  let q = supabase.from('reviews').select('*, products!left(name)');
+  let q = supabase.from('reviews').select('*');
   const orderClause = sql.match(/ORDER\s+BY\s+(.+?)$/is);
   if (orderClause) {
     for (const part of orderClause[1].split(',').map(s => s.trim())) {
@@ -275,7 +269,10 @@ async function queryReviews(sql, params) {
     }
   }
   const { data } = await q;
-  return (data || []).map(r => ({ ...r, product_name: r.products?.name || null, products: undefined }));
+  if (!data?.length) return [];
+  const { data: prods } = await supabase.from('products').select('id,name');
+  const prodMap = {}; if (prods) prods.forEach(p => { prodMap[p.id] = p.name; });
+  return data.map(r => ({ ...r, product_name: prodMap[r.product_id] || null }));
 }
 
 async function queryCount(sql, params) {
