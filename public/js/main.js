@@ -406,6 +406,17 @@ async function showProduct(id) {
       </div>
       <div class="product-detail-info">
         <h2>${p.name}</h2>
+        ${p.description ? `<div class="product-detail-description">${p.description}</div>` : ''}
+        <div class="product-detail-specs">
+          <div class="spec-item"><div class="spec-label">${currentLang === 'az' ? 'Çətinlik' : 'Сложность'}</div><div class="spec-value">${diffIcons[p.difficulty] || ''} ${p.difficulty === 'Лёгкий' ? t('diff_easy') : p.difficulty === 'Средний' ? t('diff_medium') : p.difficulty === 'Сложный' ? t('diff_hard') : p.difficulty}</div></div>
+          <div class="spec-item"><div class="spec-label">${currentLang === 'az' ? 'Rəng sayı' : 'Количество цветов'}</div><div class="spec-value">${p.colors_count}</div></div>
+          <div class="spec-item"><div class="spec-label">${currentLang === 'az' ? 'İstehsalçı' : 'Производитель'}</div><div class="spec-value">${p.manufacturer}</div></div>
+          ${sizes.length ? `<div class="spec-item"><div class="spec-label">${currentLang === 'az' ? 'Ölçülər' : 'Размеры'}</div><div class="spec-value">${sizes.join(', ')}</div></div>` : ''}
+          <div class="spec-item"><div class="spec-label">${currentLang === 'az' ? 'Stok' : 'В наличии'}</div><div class="spec-value">${p.stock > 0 ? `${p.stock} ${currentLang === 'az' ? 'əd.' : 'шт.'}` : currentLang === 'az' ? 'Yoxdur' : 'Нет в наличии'}</div></div>
+        </div>
+        ${p.includes ? `<div class="product-includes"><div class="spec-label">${currentLang === 'az' ? 'Komplektasiya' : 'Комплектация'}</div><div>${p.includes}</div></div>` : ''}
+      </div>
+      <div class="product-detail-purchase">
         <div class="purchase-card">
           <div class="purchase-price">
             <span class="current">${formatPrice(p.price)} ₼</span>
@@ -417,15 +428,6 @@ async function showProduct(id) {
             <button class="btn btn-outline" onclick="showSection('catalog')">${t('product_continue')}</button>
           </div>
         </div>
-        ${p.description ? `<div class="product-detail-description">${p.description}</div>` : ''}
-        <div class="product-detail-specs">
-          <div class="spec-item"><div class="spec-label">${currentLang === 'az' ? 'Çətinlik' : 'Сложность'}</div><div class="spec-value">${diffIcons[p.difficulty] || ''} ${p.difficulty === 'Лёгкий' ? t('diff_easy') : p.difficulty === 'Средний' ? t('diff_medium') : p.difficulty === 'Сложный' ? t('diff_hard') : p.difficulty}</div></div>
-          <div class="spec-item"><div class="spec-label">${currentLang === 'az' ? 'Rəng sayı' : 'Количество цветов'}</div><div class="spec-value">${p.colors_count}</div></div>
-          <div class="spec-item"><div class="spec-label">${currentLang === 'az' ? 'İstehsalçı' : 'Производитель'}</div><div class="spec-value">${p.manufacturer}</div></div>
-          ${sizes.length ? `<div class="spec-item"><div class="spec-label">${currentLang === 'az' ? 'Ölçülər' : 'Размеры'}</div><div class="spec-value">${sizes.join(', ')}</div></div>` : ''}
-          <div class="spec-item"><div class="spec-label">${currentLang === 'az' ? 'Stok' : 'В наличии'}</div><div class="spec-value">${p.stock > 0 ? `${p.stock} ${currentLang === 'az' ? 'əd.' : 'шт.'}` : currentLang === 'az' ? 'Yoxdur' : 'Нет в наличии'}</div></div>
-        </div>
-        ${p.includes ? `<div class="product-includes"><div class="spec-label">${currentLang === 'az' ? 'Komplektasiya' : 'Комплектация'}</div><div>${p.includes}</div></div>` : ''}
       </div>
     </div>`;
   } catch (e) { console.error(e); }
