@@ -82,18 +82,18 @@ body::after {
   pointer-events: none;
   inset: 0;
   background:
-    radial-gradient(ellipse 80% 60% at 15% 20%, rgba(198, 127, 78, 0.20) 0%, transparent 70%),
-    radial-gradient(ellipse 60% 50% at 85% 15%, rgba(184, 148, 90, 0.18) 0%, transparent 60%),
-    radial-gradient(ellipse 70% 70% at 50% 80%, rgba(154, 172, 142, 0.14) 0%, transparent 60%),
-    radial-gradient(circle 400px at 20% 60%, rgba(198, 127, 78, 0.10) 0%, transparent 100%),
-    radial-gradient(circle 500px at 80% 70%, rgba(184, 148, 90, 0.08) 0%, transparent 100%);
-  animation: glow-shift 10s ease-in-out infinite alternate;
+    radial-gradient(ellipse 100% 80% at 15% 20%, rgba(198, 127, 78, 0.40) 0%, transparent 70%),
+    radial-gradient(ellipse 80% 70% at 85% 15%, rgba(184, 148, 90, 0.35) 0%, transparent 65%),
+    radial-gradient(ellipse 90% 90% at 50% 85%, rgba(154, 172, 142, 0.30) 0%, transparent 65%),
+    radial-gradient(circle 600px at 20% 50%, rgba(198, 127, 78, 0.20) 0%, transparent 100%),
+    radial-gradient(circle 700px at 80% 60%, rgba(184, 148, 90, 0.18) 0%, transparent 100%);
+  animation: glow-shift 8s ease-in-out infinite alternate;
 }
 
 @keyframes glow-shift {
-  0% { opacity: 0.6; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.02); }
-  100% { opacity: 0.7; transform: scale(0.98); }
+  0% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.04); }
+  100% { opacity: 0.6; transform: scale(0.96); }
 }
 
 /* Floating warm light spots */
@@ -103,34 +103,42 @@ body::after {
   pointer-events: none;
   z-index: 0;
   animation: orb-float 12s ease-in-out infinite;
-  filter: blur(40px);
+  filter: blur(60px);
+  mix-blend-mode: screen;
 }
 .glow-orb:nth-child(1) {
-  width: 600px; height: 600px;
-  top: -150px; left: -150px;
-  background: radial-gradient(circle at center, rgba(198, 127, 78, 0.15) 0%, transparent 70%);
+  width: 900px; height: 900px;
+  top: -200px; left: -200px;
+  background: radial-gradient(circle at center, rgba(198, 127, 78, 0.30) 0%, transparent 70%);
   animation-delay: 0s;
 }
 .glow-orb:nth-child(2) {
-  width: 500px; height: 500px;
-  bottom: -100px; right: -100px;
-  background: radial-gradient(circle at center, rgba(184, 148, 90, 0.12) 0%, transparent 70%);
+  width: 800px; height: 800px;
+  bottom: -200px; right: -200px;
+  background: radial-gradient(circle at center, rgba(184, 148, 90, 0.25) 0%, transparent 70%);
   animation-delay: -4s;
   animation-duration: 15s;
 }
 .glow-orb:nth-child(3) {
-  width: 400px; height: 400px;
-  top: 35%; left: 55%;
-  background: radial-gradient(circle at center, rgba(154, 172, 142, 0.10) 0%, transparent 70%);
+  width: 700px; height: 700px;
+  top: 30%; left: 45%;
+  background: radial-gradient(circle at center, rgba(154, 172, 142, 0.20) 0%, transparent 70%);
   animation-delay: -8s;
   animation-duration: 18s;
+}
+.glow-orb:nth-child(4) {
+  width: 600px; height: 600px;
+  top: 60%; left: 10%;
+  background: radial-gradient(circle at center, rgba(122, 46, 58, 0.15) 0%, transparent 70%);
+  animation-delay: -2s;
+  animation-duration: 14s;
 }
 
 @keyframes orb-float {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  25% { transform: translate(30px, -40px) scale(1.08); }
-  50% { transform: translate(-20px, 15px) scale(0.92); }
-  75% { transform: translate(15px, 30px) scale(1.04); }
+  25% { transform: translate(50px, -60px) scale(1.12); }
+  50% { transform: translate(-30px, 25px) scale(0.88); }
+  75% { transform: translate(25px, 45px) scale(1.06); }
 }
 
 a { color: var(--accent-terracotta); text-decoration: none; transition: var(--transition); }
