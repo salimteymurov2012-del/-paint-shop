@@ -42,7 +42,7 @@
       "rating_sum": 0,
       "rating_count": 0,
       "username": "codingpythonbyme",
-      "last_seen": "2026-06-30T08:43:39",
+      "last_seen": "2026-06-30T15:00:38",
       "daily_streak": 3,
       "last_daily_answer": "2026-06-28"
     },
@@ -260,9 +260,9 @@
   },
   "daily_data": {
     "current_question": "С кем ты хотел бы начать общаться?",
-    "current_topic": "драмы",
+    "current_topic": "вопросы, которые стыдно задать",
     "question_date": "2026-06-30",
-    "topic_date": "2026-06-29",
+    "topic_date": "2026-06-30",
     "poll_date": "2026-06-30",
     "hot_date": "2026-06-29",
     "online_ping_at": "2026-06-29 20"

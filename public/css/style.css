@@ -436,6 +436,51 @@ img { max-width: 100%; height: auto; display: block; }
   100% { transform: translateY(calc(100vh + 160px)); opacity: 0; }
 }
 
+/* Catalog brush painting overlay */
+.catalog-brush-overlay {
+  position: absolute; inset: 0; z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.catalog-brush-overlay .cat-brush {
+  position: absolute;
+  height: 8px;
+  border-radius: 4px;
+  opacity: 0;
+  filter: blur(2px);
+  animation: cat-brush-paint 6s ease-in-out infinite;
+}
+.cat-brush:nth-child(1) {
+  top: 15%; left: -100px; width: 400px;
+  background: linear-gradient(90deg, transparent, rgba(122, 46, 58, 0.30), transparent);
+  animation-delay: 0s;
+}
+.cat-brush:nth-child(2) {
+  top: 40%; left: -80px; width: 500px; height: 6px;
+  background: linear-gradient(90deg, transparent, rgba(122, 46, 58, 0.25), transparent);
+  animation-delay: 2s;
+  animation-duration: 8s;
+}
+.cat-brush:nth-child(3) {
+  top: 65%; left: -60px; width: 350px; height: 10px;
+  background: linear-gradient(90deg, transparent, rgba(122, 46, 58, 0.20), transparent);
+  animation-delay: 4s;
+  animation-duration: 7s;
+}
+.cat-brush:nth-child(4) {
+  top: 85%; left: -120px; width: 600px; height: 5px;
+  background: linear-gradient(90deg, transparent, rgba(122, 46, 58, 0.25), transparent);
+  animation-delay: 1s;
+  animation-duration: 9s;
+}
+@keyframes cat-brush-paint {
+  0% { transform: translateX(0) rotate(-10deg); opacity: 0; }
+  20% { opacity: 0.25; }
+  50% { transform: translateX(calc(100vw + 120px)) rotate(5deg); opacity: 0.15; }
+  80% { opacity: 0; }
+  100% { transform: translateX(calc(100vw + 120px)) rotate(10deg); opacity: 0; }
+}
+
 /* =========== BUTTONS =========== */
 .btn {
   display: inline-flex; align-items: center; gap: 8px;
@@ -563,7 +608,16 @@ img { max-width: 100%; height: auto; display: block; }
   opacity: 0; transform: translateY(24px);
   box-shadow: 0 4px 20px var(--shadow);
 }
-.product-card.visible { opacity: 1; transform: translateY(0); }
+.product-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+  animation: card-paint-reveal 0.8s ease-out;
+}
+@keyframes card-paint-reveal {
+  0% { opacity: 0; transform: translateY(30px) scaleX(0.95); filter: blur(4px); }
+  50% { filter: blur(0); }
+  100% { opacity: 1; transform: translateY(0) scaleX(1); }
+}
 .product-card:hover {
   transform: translateY(-8px) scale(1.01);
   box-shadow: 0 16px 48px var(--shadow-md), 0 0 0 2px var(--accent-terracotta);
