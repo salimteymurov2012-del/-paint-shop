@@ -118,6 +118,8 @@ async function loadDashboard() {
     `;
     if (stats.popular && stats.popular.length) {
       document.getElementById('popular-products').innerHTML = `<ul style="list-style:none;padding:0">${stats.popular.map(p => `<li style="padding:8px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between"><span>${p.name}</span><span style="color:var(--gold-light)">${p.total} шт.</span></li>`).join('')}</ul>`;
+    } else {
+      document.getElementById('popular-products').innerHTML = '<p style="color:var(--text-secondary);text-align:center;padding:16px">Нет данных о продажах</p>';
     }
 
     // Show phone access

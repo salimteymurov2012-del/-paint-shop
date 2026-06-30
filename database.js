@@ -260,6 +260,18 @@ async function queryCategoriesWithCount(sql, params) {
 
 async function queryReviews(sql, params) {
   let q = supabase.from('reviews').select('*');
+  const whereClause = sql.match(/WHERE\s+(.+?)(?:\s+ORDER\s+BY|\s+LIMIT|\s*$)/is);
+  let pIdx = 0;
+  if (whereClause) {
+    for (const cond of whereClause[1].split(/\s+AND\s+/i)) {
+      const t = cond.trim(); if (t === '1=1') continue;
+      const m = t.match(/(?:r\.)?(\w+)\s*(=|!=|<>)\s*/i);
+      if (!m) continue;
+      const litMatch = t.match(/=\s*'([^']*)'/);
+      if (litMatch) { q = q.eq(m[1], litMatch[1]); continue; }
+      if (params[pIdx] !== undefined) { q = q.eq(m[1], params[pIdx]); pIdx++; }
+    }
+  }
   const orderClause = sql.match(/ORDER\s+BY\s+(.+?)$/is);
   if (orderClause) {
     for (const part of orderClause[1].split(',').map(s => s.trim())) {
