@@ -225,9 +225,11 @@ function renderSocialLinks() {
   const container = document.getElementById('social-links');
   if (!container) return;
   const links = allSettings.social_links || [];
-  container.innerHTML = links.map(s =>
-    `<a href="${s.url}" target="_blank" class="social-link">${s.icon || s.name.slice(0,2)}</a>`
-  ).join('');
+  container.innerHTML = links.map(s => {
+    const isImg = s.icon && (s.icon.startsWith('http') || s.icon.includes('.'));
+    const iconHtml = isImg ? `<img src="/uploads/${s.icon}" style="width:20px;height:20px;object-fit:cover;border-radius:4px">` : (s.icon || s.name.slice(0,2));
+    return `<a href="${s.url}" target="_blank" class="social-link">${iconHtml}</a>`;
+  }).join('');
 }
 
 // =========== CATEGORIES ===========
@@ -567,8 +569,11 @@ async function loadContact() {
       </div>
       <h3 style="font-family:var(--font-display);color:var(--light-gold);margin:24px 0 12px">${t('contact_social')}</h3>
       <div style="display:flex;gap:12px;flex-wrap:wrap">
-        ${(allSettings.social_links || []).filter(s => s.url && s.url !== '#').map(s =>
-          `<a href="${s.url}" class="btn btn-outline" target="_blank">${s.icon || ''} ${s.name}</a>`
+        ${(allSettings.social_links || []).filter(s => s.url && s.url !== '#').map(s => {
+          const isImg = s.icon && (s.icon.startsWith('http') || s.icon.includes('.'));
+          const iconHtml = isImg ? `<img src="/uploads/${s.icon}" style="width:18px;height:18px;object-fit:cover;vertical-align:middle;border-radius:3px;margin-right:6px">` : (s.icon || '');
+          return `<a href="${s.url}" class="btn btn-outline" target="_blank">${iconHtml} ${s.name}</a>`;
+        }).join('')}
         ).join('')}
       </div>`;
   } catch(e) {

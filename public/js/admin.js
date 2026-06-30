@@ -585,14 +585,20 @@ async function loadSettings() {
     html += `<div class="modal-field">
       <label>Социальные сети (можно добавить любые)</label>
       <div id="social-links-list">
-        ${socialLinks.map((sl, i) => `
+        ${socialLinks.map((sl, i) => {
+          const isImg = sl.icon && (sl.icon.startsWith('http') || sl.icon.includes('.'));
+          const preview = isImg ? `<img src="/uploads/${sl.icon}" style="width:100%;height:100%;object-fit:cover">` : (sl.icon || '🖼');
+          return `
           <div class="social-link-row" style="display:flex;gap:8px;margin-bottom:8px;align-items:center">
-            <input type="text" value="${sl.icon || ''}" placeholder="Иконка" style="width:60px" class="sl-icon" onchange="updateSocialLink(${i},'icon',this.value)">
+            <label style="cursor:pointer;position:relative;width:60px;height:36px;display:flex;align-items:center;justify-content:center;background:var(--glass);border:1px solid var(--glass-border);border-radius:6px;overflow:hidden;flex-shrink:0">
+              ${preview}
+              <input type="file" accept="image/*" style="position:absolute;inset:0;opacity:0;cursor:pointer" onchange="uploadSocialIcon(${i},this)">
+            </label>
             <input type="text" value="${sl.name}" placeholder="Название" style="flex:1" class="sl-name" onchange="updateSocialLink(${i},'name',this.value)">
             <input type="text" value="${sl.url}" placeholder="Ссылка" style="flex:2" class="sl-url" onchange="updateSocialLink(${i},'url',this.value)">
             <button class="btn btn-sm btn-danger" onclick="removeSocialLink(${i})">✕</button>
-          </div>
-        `).join('')}
+          </div>`;
+        }).join('')}
       </div>
       <button class="btn btn-sm btn-outline" onclick="addSocialLink()" style="margin-top:8px">+ Добавить соцсеть</button>
     </div>`;
@@ -616,12 +622,30 @@ function removeSocialLink(index) {
   renderSocialLinksUI();
 }
 
+async function uploadSocialIcon(index, fileInput) {
+  const file = fileInput.files[0];
+  if (!file) return;
+  const formData = new FormData();
+  formData.append('file', file);
+  try {
+    const res = await fetch(`${API}/admin/upload`, { method: 'POST', headers: { 'X-Admin-Key': adminKey }, body: formData });
+    const data = await res.json();
+    if (data.success) {
+      socialLinks[index].icon = data.filename;
+      renderSocialLinksUI();
+    }
+  } catch(e) { console.error(e); }
+}
+
 function renderSocialLinksUI() {
   const container = document.getElementById('social-links-list');
   if (!container) return;
   container.innerHTML = socialLinks.map((sl, i) => `
     <div class="social-link-row" style="display:flex;gap:8px;margin-bottom:8px;align-items:center">
-      <input type="text" value="${sl.icon || ''}" placeholder="Иконка" style="width:60px" onchange="updateSocialLink(${i},'icon',this.value)">
+      <label style="cursor:pointer;position:relative;width:60px;height:36px;display:flex;align-items:center;justify-content:center;background:var(--glass);border:1px solid var(--glass-border);border-radius:6px;overflow:hidden;flex-shrink:0">
+        ${sl.icon && (sl.icon.startsWith('http') || sl.icon.includes('.')) ? `<img src="/uploads/${sl.icon}" style="width:100%;height:100%;object-fit:cover">` : (sl.icon || '🖼')}
+        <input type="file" accept="image/*" style="position:absolute;inset:0;opacity:0;cursor:pointer" onchange="uploadSocialIcon(${i},this)">
+      </label>
       <input type="text" value="${sl.name}" placeholder="Название" style="flex:1" onchange="updateSocialLink(${i},'name',this.value)">
       <input type="text" value="${sl.url}" placeholder="Ссылка" style="flex:2" onchange="updateSocialLink(${i},'url',this.value)">
       <button class="btn btn-sm btn-danger" onclick="removeSocialLink(${i})">✕</button>

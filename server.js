@@ -328,6 +328,13 @@ app.put('/api/admin/settings', adminAuth, async (req, res) => {
   res.json({ success: true });
 });
 
+app.post('/api/admin/upload', adminAuth, upload.single('file'), async (req, res) => {
+  if (!req.file) return res.status(400).json({ error: 'Файл не загружен' });
+  const filename = 'social-' + uuidv4() + path.extname(req.file.originalname);
+  await uploadToStorage(req.file.buffer, filename, req.file.mimetype);
+  res.json({ success: true, filename });
+});
+
 app.get('/api/my-ip', (req, res) => {
   const ips = os.networkInterfaces();
   let ip = 'localhost';
