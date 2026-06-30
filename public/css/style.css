@@ -364,6 +364,9 @@ img { max-width: 100%; height: auto; display: block; }
 .price-discount { font-size: 13px; color: #2ecc71; font-weight: 600; }
 
 /* =========== PRODUCT DETAIL =========== */
+#section-product > .container {
+  padding-top: 120px;
+}
 .back-btn {
   background: none; border: none; color: var(--light-gold);
   cursor: pointer; font-size: 16px; padding: 16px 0; font-family: var(--font-body);
@@ -802,8 +805,8 @@ img { max-width: 100%; height: auto; display: block; }
   .home-product-card .hp-name { font-size: 12px; }
   .home-product-card .hp-price { font-size: 14px; }
   .features-grid { gap: 8px; }
+  #section-product > .container { padding-top: 100px; }
   .product-detail-main-image { aspect-ratio: 3/2; min-height: 250px; }
-  .product-detail-info h2 { font-size: 22px; }
   .product-detail-thumbs img { width: 60px; height: 45px; }
   .purchase-card { padding: 20px; gap: 16px; }
   .purchase-title { font-size: 22px; }
