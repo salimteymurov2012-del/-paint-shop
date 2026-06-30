@@ -368,6 +368,39 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 /* Continuous paint drip effect */
+/* Animated paintbrush icon */
+.paint-brush-icon {
+  position: fixed;
+  pointer-events: none;
+  z-index: 0;
+  font-size: 32px;
+  opacity: 0.5;
+  animation: brush-float-across 18s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba(122, 46, 58, 0.6));
+}
+.paint-brush-icon:nth-child(10) {
+  top: 20%;
+  animation-delay: 0s;
+  animation-duration: 16s;
+}
+.paint-brush-icon:nth-child(11) {
+  top: 55%;
+  animation-delay: -6s;
+  animation-duration: 20s;
+}
+.paint-brush-icon:nth-child(12) {
+  top: 80%;
+  animation-delay: -12s;
+  animation-duration: 14s;
+}
+@keyframes brush-float-across {
+  0% { transform: translateX(-80px) rotate(-20deg); opacity: 0; }
+  10% { opacity: 0.6; }
+  50% { transform: translateX(calc(100vw + 80px)) rotate(10deg); opacity: 0.4; }
+  90% { opacity: 0; }
+  100% { transform: translateX(calc(100vw + 80px)) rotate(20deg); opacity: 0; }
+}
+
 .paint-drip {
   position: fixed;
   pointer-events: none;

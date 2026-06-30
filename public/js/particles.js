@@ -91,35 +91,54 @@
     }
   }
 
-  // Brush stroke particle — paints burgundy
-  class BrushParticle {
+  // Brush stroke — paints burgundy trail
+  class BrushStroke {
     constructor() {
       this.reset();
+      this.trail = [];
     }
     reset() {
-      this.x = -50;
-      this.y = Math.random() * height;
-      this.speedX = Math.random() * 2 + 1.5;
-      this.speedY = (Math.random() - 0.5) * 0.8;
-      this.size = Math.random() * 12 + 6;
-      this.opacity = Math.random() * 0.3 + 0.15;
-      this.wobble = Math.random() * 0.02;
+      this.x = -80;
+      this.y = Math.random() * height * 0.8 + height * 0.1;
+      this.speedX = Math.random() * 1.5 + 1;
+      this.speedY = (Math.random() - 0.5) * 0.3;
+      this.wobble = Math.random() * 0.015 + 0.005;
       this.offset = Math.random() * 100;
+      this.maxTrail = Math.floor(Math.random() * 30 + 20);
+      this.trail = [];
     }
     update() {
       this.x += this.speedX;
-      this.y += this.speedY + Math.sin(Date.now() * this.wobble + this.offset) * 0.5;
-      if (this.x > width + 50) this.reset();
+      this.y += this.speedY + Math.sin(Date.now() * this.wobble + this.offset) * 0.8;
+      this.trail.push({ x: this.x, y: this.y });
+      if (this.trail.length > this.maxTrail) this.trail.shift();
+      if (this.x > width + 100) this.reset();
     }
     draw() {
+      if (this.trail.length < 2) return;
+      const grad = ctx.createLinearGradient(this.trail[0].x, 0, this.trail[this.trail.length-1].x, 0);
+      grad.addColorStop(0, 'rgba(122, 46, 58, 0)');
+      grad.addColorStop(0.3, 'rgba(122, 46, 58, 0.35)');
+      grad.addColorStop(0.7, 'rgba(122, 46, 58, 0.25)');
+      grad.addColorStop(1, 'rgba(122, 46, 58, 0)');
       ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(122, 46, 58, ${this.opacity})`;
-      ctx.fill();
+      ctx.moveTo(this.trail[0].x, this.trail[0].y);
+      for (let i = 1; i < this.trail.length; i++) {
+        ctx.lineTo(this.trail[i].x, this.trail[i].y);
+      }
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 10;
+      ctx.lineCap = 'round';
+      ctx.stroke();
       ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size * 2.5, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(122, 46, 58, ${this.opacity * 0.3})`;
-      ctx.fill();
+      ctx.moveTo(this.trail[0].x, this.trail[0].y);
+      for (let i = 1; i < this.trail.length; i++) {
+        ctx.lineTo(this.trail[i].x, this.trail[i].y);
+      }
+      ctx.strokeStyle = 'rgba(122, 46, 58, 0.12)';
+      ctx.lineWidth = 30;
+      ctx.lineCap = 'round';
+      ctx.stroke();
     }
   }
 
@@ -135,8 +154,8 @@
       stars.push(new SwirlParticle());
     }
     brushes = [];
-    for (let i = 0; i < 20; i++) {
-      brushes.push(new BrushParticle());
+    for (let i = 0; i < 8; i++) {
+      brushes.push(new BrushStroke());
     }
   }
 
