@@ -300,7 +300,7 @@ function renderBlock(title, products) {
           const imgSrc = p.image ? `/uploads/${p.image}` : null;
           return `<div class="home-product-card" onclick="showProduct('${p.id}')">
             <div class="hp-image">
-        ${imgSrc ? `<img src="${imgSrc}" alt="${p.name.replace(/"/g, '&quot;')}" loading="lazy">` : '<span class="placeholder-icon">🎨</span>'}
+        ${imgSrc ? `<img src="${imgSrc}" alt="${p.name.replace(/"/g, '&quot;')}" loading="lazy">` : '<span class="placeholder-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:48px;height:48px"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg></span>'}
             </div>
             <div class="hp-info">
               <div class="hp-name">${p.name}</div>
@@ -343,14 +343,14 @@ function renderCatalog() {
     return;
   }
   empty.style.display = 'none';
-  const diffIcons = { 'Лёгкий': '🟢', 'Средний': '🟡', 'Сложный': '🔴' };
+  const diffDots = { 'Лёгкий': 'e', 'Средний': 'm', 'Сложный': 'h' };
   grid.innerHTML = allProducts.map(p => {
     const mainImg = p.images && p.images.length ? p.images.find(i => i.is_main) || p.images[0] : null;
     const imgSrc = mainImg ? `/uploads/${mainImg.filename}` : null;
     const hasDiscount = p.discount && p.old_price;
     return `<div class="product-card" onclick="showProduct('${p.id}')">
       <div class="product-image">
-        ${imgSrc ? `<img src="${imgSrc}" alt="${p.name}" loading="lazy">` : '<span class="placeholder-icon">🎨</span>'}
+        ${imgSrc ? `<img src="${imgSrc}" alt="${p.name.replace(/"/g, '&quot;')}" loading="lazy">` : '<span class="placeholder-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:64px;height:64px"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg></span>'}
         <div class="product-badges">
           ${p.is_new ? `<span class="badge badge-new">${t('home_new')}</span>` : ''}
           ${p.is_bestseller ? `<span class="badge badge-bestseller">${t('home_bestseller')}</span>` : ''}
@@ -362,8 +362,8 @@ function renderCatalog() {
         <div class="product-category">${p.category_name || ''}</div>
         <div class="product-name">${p.name}</div>
         <div class="product-meta">
-          <span>${diffIcons[p.difficulty] || '⚪'} ${p.difficulty === 'Лёгкий' ? t('diff_easy') : p.difficulty === 'Средний' ? t('diff_medium') : p.difficulty === 'Сложный' ? t('diff_hard') : p.difficulty}</span>
-          <span>🎨 ${p.colors_count} ${currentLang === 'az' ? 'rəng' : 'цв.'}</span>
+          <span><span class="diff-dot diff-${diffDots[p.difficulty] || 'a'}" style="background:${p.difficulty === 'Лёгкий' ? '#9AAC8E' : p.difficulty === 'Средний' ? '#B8945A' : p.difficulty === 'Сложный' ? '#7A2E3A' : '#9C8B7A'}"></span> ${p.difficulty === 'Лёгкий' ? t('diff_easy') : p.difficulty === 'Средний' ? t('diff_medium') : p.difficulty === 'Сложный' ? t('diff_hard') : p.difficulty}</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;vertical-align:middle;margin-right:3px"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg> ${p.colors_count} ${currentLang === 'az' ? 'rəng' : 'цв.'}</span>
         </div>
         <div class="product-price">
           <span class="price-current">${formatPrice(p.price)} ₼</span>
@@ -393,14 +393,14 @@ async function showProduct(id) {
     const container = document.getElementById('product-detail');
     const mainImg = p.images && p.images.length ? p.images.find(i => i.is_main) || p.images[0] : null;
     const hasDiscount = p.discount && p.old_price;
-    const diffIcons = { 'Лёгкий': '🟢', 'Средний': '🟡', 'Сложный': '🔴' };
+    const diffDots = { 'Лёгкий': 'e', 'Средний': 'm', 'Сложный': 'h' };
     let sizes = [];
     try { sizes = JSON.parse(p.sizes || '[]'); } catch(e) {}
 
     container.innerHTML = `<div class="product-detail${p.images && p.images.length ? ' gallery-loaded' : ''}">
       <div class="product-detail-gallery">
         <div class="product-detail-main-image">
-          ${mainImg ? `<img src="/uploads/${mainImg.filename}" alt="${p.name.replace(/"/g, '&quot;')}" id="main-product-image">` : '<span style="font-size:80px;opacity:0.3">🎨</span>'}
+          ${mainImg ? `<img src="/uploads/${mainImg.filename}" alt="${p.name.replace(/"/g, '&quot;')}" id="main-product-image">` : '<span style="opacity:0.3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:80px;height:80px;color:var(--text-muted)"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg></span>'}
         </div>
         ${p.images && p.images.length > 1 ? `<div class="product-detail-thumbs">
           ${p.images.map(img => `<img src="/uploads/${img.filename}" class="${img.is_main ? 'active' : ''}" onclick="document.getElementById('main-product-image').src='/uploads/${img.filename}';document.querySelectorAll('.product-detail-thumbs img').forEach(el=>el.classList.remove('active'));this.classList.add('active')">`).join('')}
@@ -420,7 +420,7 @@ async function showProduct(id) {
             <button class="btn btn-outline" onclick="showSection('catalog')">${t('product_continue')}</button>
           </div>
           <div class="purchase-specs">
-            <div class="spec-item"><div class="spec-label">${currentLang === 'az' ? 'Çətinlik' : 'Сложность'}</div><div class="spec-value">${diffIcons[p.difficulty] || ''} ${p.difficulty === 'Лёгкий' ? t('diff_easy') : p.difficulty === 'Средний' ? t('diff_medium') : p.difficulty === 'Сложный' ? t('diff_hard') : p.difficulty}</div></div>
+            <div class="spec-item"><div class="spec-label">${currentLang === 'az' ? 'Çətinlik' : 'Сложность'}</div><div class="spec-value"><span class="diff-dot diff-${diffDots[p.difficulty] || 'a'}" style="background:${p.difficulty === 'Лёгкий' ? '#9AAC8E' : p.difficulty === 'Средний' ? '#B8945A' : p.difficulty === 'Сложный' ? '#7A2E3A' : '#9C8B7A'};vertical-align:middle;margin-right:4px"></span> ${p.difficulty === 'Лёгкий' ? t('diff_easy') : p.difficulty === 'Средний' ? t('diff_medium') : p.difficulty === 'Сложный' ? t('diff_hard') : p.difficulty}</div></div>
             <div class="spec-item"><div class="spec-label">${currentLang === 'az' ? 'Rəng sayı' : 'Количество цветов'}</div><div class="spec-value">${p.colors_count}</div></div>
             <div class="spec-item"><div class="spec-label">${currentLang === 'az' ? 'İstehsalçı' : 'Производитель'}</div><div class="spec-value">${p.manufacturer}</div></div>
             ${sizes.length ? `<div class="spec-item"><div class="spec-label">${currentLang === 'az' ? 'Ölçülər' : 'Размеры'}</div><div class="spec-value">${sizes.join(', ')}</div></div>` : ''}
@@ -483,7 +483,7 @@ function renderCart() {
           const imgSrc = img ? `/uploads/${img.filename}` : null;
           return `<div class="cart-item">
             <div class="cart-item-img">
-              ${imgSrc ? `<img src="${imgSrc}" alt="${item.name.replace(/"/g, '&quot;')}">` : '<span>🎨</span>'}
+              ${imgSrc ? `<img src="${imgSrc}" alt="${item.name.replace(/"/g, '&quot;')}">` : '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:32px;height:32px;color:var(--text-muted)"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg></span>'}
             </div>
             <div class="cart-item-info">
               <h4>${item.name}</h4>
@@ -563,9 +563,9 @@ async function loadContact() {
     const s = await res.json();
     document.getElementById('contact-content').innerHTML = `
       <div class="contact-info">
-        ${s.phone ? `<div class="contact-item"><span class="icon">📞</span><span class="text"><strong>${t('contact_phone')}:</strong> ${s.phone}</span></div>` : ''}
-        ${s.email ? `<div class="contact-item"><span class="icon">✉️</span><span class="text"><strong>${t('contact_email')}:</strong> ${s.email}</span></div>` : ''}
-        ${s.address ? `<div class="contact-item"><span class="icon">📍</span><span class="text"><strong>${t('contact_address')}:</strong> ${s.address}</span></div>` : ''}
+        ${s.phone ? `<div class="contact-item"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span><span class="text"><strong>${t('contact_phone')}:</strong> ${s.phone}</span></div>` : ''}
+        ${s.email ? `<div class="contact-item"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span><span class="text"><strong>${t('contact_email')}:</strong> ${s.email}</span></div>` : ''}
+        ${s.address ? `<div class="contact-item"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span><span class="text"><strong>${t('contact_address')}:</strong> ${s.address}</span></div>` : ''}
       </div>
       <h3 style="font-family:var(--font-display);color:var(--light-gold);margin:24px 0 12px">${t('contact_social')}</h3>
       <div style="display:flex;gap:12px;flex-wrap:wrap">
