@@ -1,0 +1,5 @@
+print("Фамилия?")
+surname = input()
+print("Имя?")
+name = input()
+print(f"Полное имя: {surname} {name}")

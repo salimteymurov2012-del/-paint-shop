@@ -38,7 +38,7 @@ async function initFallback() {
     db.run('PRAGMA foreign_keys = ON');
     const tables = [
       'CREATE TABLE IF NOT EXISTS categories (id TEXT PRIMARY KEY, name TEXT NOT NULL, slug TEXT UNIQUE NOT NULL, parent_id TEXT, order_index INTEGER DEFAULT 0, created_at DATETIME DEFAULT CURRENT_TIMESTAMP)',
-      'CREATE TABLE IF NOT EXISTS products (id TEXT PRIMARY KEY, name TEXT NOT NULL, slug TEXT UNIQUE NOT NULL, description TEXT, price REAL NOT NULL, old_price REAL, discount INTEGER DEFAULT 0, discount_percent INTEGER DEFAULT 0, category_id TEXT, sizes TEXT DEFAULT \'[]\', difficulty TEXT DEFAULT \'Средний\', colors_count INTEGER DEFAULT 24, manufacturer TEXT DEFAULT \'\', includes TEXT, stock INTEGER DEFAULT 0, visible INTEGER DEFAULT 1, order_index INTEGER DEFAULT 0, is_new INTEGER DEFAULT 0, is_bestseller INTEGER DEFAULT 0, is_recommended INTEGER DEFAULT 0, is_limited INTEGER DEFAULT 0, seo_title TEXT, seo_description TEXT, created_at DATETIME DEFAULT CURRENT_TIMESTAMP, updated_at DATETIME DEFAULT CURRENT_TIMESTAMP)',
+      'CREATE TABLE IF NOT EXISTS products (id TEXT PRIMARY KEY, name TEXT NOT NULL, name_az TEXT DEFAULT '', name_ru TEXT DEFAULT '', description TEXT, description_az TEXT DEFAULT '', description_ru TEXT DEFAULT '', price REAL NOT NULL, old_price REAL, discount INTEGER DEFAULT 0, discount_percent INTEGER DEFAULT 0, category_id TEXT, sizes TEXT DEFAULT '[]', difficulty TEXT DEFAULT 'Средний', colors_count INTEGER DEFAULT 24, manufacturer TEXT DEFAULT '', includes TEXT, stock INTEGER DEFAULT 0, visible INTEGER DEFAULT 1, order_index INTEGER DEFAULT 0, is_new INTEGER DEFAULT 0, is_bestseller INTEGER DEFAULT 0, is_recommended INTEGER DEFAULT 0, is_limited INTEGER DEFAULT 0, seo_title TEXT, seo_description TEXT, created_at DATETIME DEFAULT CURRENT_TIMESTAMP, updated_at DATETIME DEFAULT CURRENT_TIMESTAMP)',
       'CREATE TABLE IF NOT EXISTS product_images (id TEXT PRIMARY KEY, product_id TEXT NOT NULL, filename TEXT NOT NULL, is_main INTEGER DEFAULT 0, order_index INTEGER DEFAULT 0, created_at DATETIME DEFAULT CURRENT_TIMESTAMP)',
       'CREATE TABLE IF NOT EXISTS banners (id TEXT PRIMARY KEY, title TEXT, subtitle TEXT, button_text TEXT, button_link TEXT, image TEXT, is_active INTEGER DEFAULT 1, order_index INTEGER DEFAULT 0, created_at DATETIME DEFAULT CURRENT_TIMESTAMP)',
       'CREATE TABLE IF NOT EXISTS orders (id TEXT PRIMARY KEY, customer_name TEXT NOT NULL, customer_phone TEXT NOT NULL, customer_email TEXT, address TEXT, comment TEXT, items TEXT NOT NULL DEFAULT \'[]\', total REAL NOT NULL, status TEXT DEFAULT \'new\', delivery_method TEXT, payment_method TEXT, created_at DATETIME DEFAULT CURRENT_TIMESTAMP)',
@@ -48,6 +48,11 @@ async function initFallback() {
       'CREATE TABLE IF NOT EXISTS admin_sessions (id TEXT PRIMARY KEY, created_at DATETIME DEFAULT CURRENT_TIMESTAMP)',
     ];
     tables.forEach(s => db.run(s));
+    // Migrations for existing databases
+    try { db.run("ALTER TABLE products ADD COLUMN name_az TEXT DEFAULT ''"); } catch(e) {}
+    try { db.run("ALTER TABLE products ADD COLUMN name_ru TEXT DEFAULT ''"); } catch(e) {}
+    try { db.run("ALTER TABLE products ADD COLUMN description_az TEXT DEFAULT ''"); } catch(e) {}
+    try { db.run("ALTER TABLE products ADD COLUMN description_ru TEXT DEFAULT ''"); } catch(e) {}
     const defaults = { site_name:'Painting by Number', site_description:'Rəqəmlərlə rəsmlər', admin_key:'admin123', phone:'+994 (50) 123-45-67', email:'info@example.az', address:'Bakı şəhəri', manufacturer:'Мой бренд', social_links:JSON.stringify([{name:'Instagram',url:'#',icon:'📷'},{name:'Telegram',url:'#',icon:'✈️'},{name:'WhatsApp',url:'#',icon:'💬'}]), delivery_info:'Bakı üzrə 1-3 gün, Azərbaycan üzrə 3-7 gün', payment_info:'Çatdırılma zamanı nağd, kartla online', about_text:'Rəqəmlərlə rəsmlər dəsti ilə hər kəs özünü rəssam kimi hiss edə bilər.' };
     for (const [key, value] of Object.entries(defaults)) {
       const existing = db.exec(`SELECT value FROM settings WHERE key = '${key.replace(/'/g, "''")}'`);

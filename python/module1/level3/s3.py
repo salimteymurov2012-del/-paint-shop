@@ -1,0 +1,5 @@
+print("Кто твой питомец?")
+animal = input()
+print("Имя?")
+name = input()
+print(f"Питомец: {animal}, - {name}")

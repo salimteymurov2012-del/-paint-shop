@@ -1,0 +1,6 @@
+print("Имя игрока?")
+name = input()
+print("Любимая игра?")
+game = input()
+print(f"Имя игрока: {name}")
+print(f"Любимая игра: {game}")

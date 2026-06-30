@@ -1,0 +1,436 @@
+{
+  "banned": [],
+  "known_users": [
+    8002558465,
+    7579565444,
+    6644964102,
+    5964216711,
+    5858319887,
+    8242989466,
+    8752230561,
+    5817552292,
+    8843953577,
+    8237093546,
+    6182062585,
+    7687785267,
+    7186186293,
+    8608039352,
+    5121565763,
+    7672142280,
+    6792138832,
+    1105987159,
+    6251381212,
+    7614715492,
+    8910678507,
+    8550437617,
+    6403699825,
+    8634303986,
+    1739360372,
+    5954032504,
+    7976641785
+  ],
+  "stats": {
+    "total_messages": 1080,
+    "total_sessions": 73,
+    "total_valentines": 2,
+    "daily_answers": 16,
+    "hot_likes": 11
+  },
+  "users_db": {
+    "8550437617": {
+      "desc": "🐢❤️",
+      "rating_sum": 0,
+      "rating_count": 0,
+      "username": "codingpythonbyme",
+      "last_seen": "2026-06-30T08:43:39",
+      "daily_streak": 3,
+      "last_daily_answer": "2026-06-28"
+    },
+    "1105987159": {
+      "desc": "Описание не заполнено.",
+      "username": "",
+      "rating_sum": 5,
+      "rating_count": 1,
+      "last_seen": "2026-06-22T21:25:49"
+    },
+    "7976641785": {
+      "desc": "Описание не заполнено.",
+      "username": "justloxde",
+      "rating_sum": 3,
+      "rating_count": 1,
+      "last_seen": "2026-06-28T12:43:28",
+      "daily_streak": 2,
+      "last_daily_answer": "2026-06-24"
+    },
+    "8242989466": {
+      "desc": "Описание не заполнено.",
+      "username": "amina0136",
+      "rating_sum": 0,
+      "rating_count": 0
+    },
+    "8237093546": {
+      "desc": "Описание не заполнено.",
+      "username": "siriusik228",
+      "rating_sum": 5,
+      "rating_count": 1,
+      "last_seen": "2026-06-22T21:25:51",
+      "daily_streak": 0,
+      "last_daily_answer": ""
+    },
+    "7614715492": {
+      "desc": ".",
+      "username": "idgaf872",
+      "rating_sum": 15,
+      "rating_count": 3,
+      "last_seen": "2026-06-29T22:34:13",
+      "daily_streak": 1,
+      "last_daily_answer": "2026-06-24"
+    },
+    "8002558465": {
+      "desc": "Описание не заполнено.",
+      "username": "bammbbii_i",
+      "rating_sum": 0,
+      "rating_count": 0,
+      "last_seen": "2026-06-23T07:47:59",
+      "daily_streak": 0,
+      "last_daily_answer": ""
+    },
+    "8752230561": {
+      "desc": "Описание не заполнено.",
+      "username": "wx0wnz",
+      "rating_sum": 0,
+      "rating_count": 0,
+      "last_seen": "2026-06-23T09:13:19",
+      "daily_streak": 0,
+      "last_daily_answer": ""
+    },
+    "6644964102": {
+      "desc": "Описание не заполнено.",
+      "username": "",
+      "rating_sum": 1,
+      "rating_count": 1,
+      "last_seen": "2026-06-28T22:08:18",
+      "daily_streak": 0,
+      "last_daily_answer": ""
+    },
+    "7672142280": {
+      "desc": "Описание не заполнено.",
+      "username": "juniornuray",
+      "rating_sum": 0,
+      "rating_count": 0,
+      "last_seen": "2026-06-24T17:51:46",
+      "daily_streak": 0,
+      "last_daily_answer": ""
+    },
+    "5817552292": {
+      "desc": "Описание не заполнено.",
+      "username": "jekushonok",
+      "rating_sum": 0,
+      "rating_count": 0,
+      "last_seen": "2026-06-23T19:18:07",
+      "daily_streak": 0,
+      "last_daily_answer": ""
+    },
+    "8843953577": {
+      "desc": ".",
+      "username": "mangust_16",
+      "rating_sum": 33,
+      "rating_count": 13,
+      "last_seen": "2026-06-29T12:15:36",
+      "daily_streak": 1,
+      "last_daily_answer": "2026-06-24"
+    },
+    "6251381212": {
+      "desc": "Описание не заполнено.",
+      "username": "vaessa_09",
+      "rating_sum": 0,
+      "rating_count": 0,
+      "last_seen": "2026-06-24T11:15:32",
+      "daily_streak": 0,
+      "last_daily_answer": ""
+    },
+    "6792138832": {
+      "desc": "Описание не заполнено.",
+      "username": "ramiiik1",
+      "rating_sum": 16,
+      "rating_count": 8,
+      "last_seen": "2026-06-30T14:49:21",
+      "daily_streak": 0,
+      "last_daily_answer": ""
+    },
+    "8910678507": {
+      "desc": "ну",
+      "username": "al1nochkatop",
+      "rating_sum": 16,
+      "rating_count": 13,
+      "last_seen": "2026-06-25T12:34:05",
+      "daily_streak": 2,
+      "last_daily_answer": "2026-06-25"
+    },
+    "7687785267": {
+      "desc": "Описание не заполнено.",
+      "username": "darkkx70",
+      "rating_sum": 13,
+      "rating_count": 5,
+      "last_seen": "2026-06-29T23:00:32",
+      "daily_streak": 1,
+      "last_daily_answer": "2026-06-24"
+    },
+    "8608039352": {
+      "desc": "Описание не заполнено.",
+      "username": "mehdi_offical7",
+      "rating_sum": 0,
+      "rating_count": 0,
+      "last_seen": "2026-06-24T23:03:49",
+      "daily_streak": 0,
+      "last_daily_answer": ""
+    },
+    "7579565444": {
+      "desc": "Описание не заполнено.",
+      "username": "notmyq",
+      "rating_sum": 0,
+      "rating_count": 0,
+      "last_seen": "2026-06-25T21:56:50",
+      "daily_streak": 0,
+      "last_daily_answer": ""
+    },
+    "5858319887": {
+      "desc": "Описание не заполнено.",
+      "username": "moriarti38",
+      "rating_sum": 0,
+      "rating_count": 0,
+      "last_seen": "2026-06-25T22:43:06",
+      "daily_streak": 0,
+      "last_daily_answer": ""
+    },
+    "5121565763": {
+      "desc": "Описание не заполнено.",
+      "username": "miimmimmim",
+      "rating_sum": 0,
+      "rating_count": 0,
+      "last_seen": "2026-06-28T18:51:59",
+      "daily_streak": 0,
+      "last_daily_answer": ""
+    },
+    "6182062585": {
+      "desc": "Описание не заполнено.",
+      "username": "mismailzada13",
+      "rating_sum": 0,
+      "rating_count": 0,
+      "last_seen": "2026-06-28T01:31:14",
+      "daily_streak": 0,
+      "last_daily_answer": ""
+    },
+    "6403699825": {
+      "desc": "Описание не заполнено.",
+      "username": "",
+      "rating_sum": 0,
+      "rating_count": 0,
+      "last_seen": "2026-06-28T01:31:14",
+      "daily_streak": 0,
+      "last_daily_answer": ""
+    },
+    "8634303986": {
+      "desc": "Описание не заполнено.",
+      "username": "mag4kafr",
+      "rating_sum": 0,
+      "rating_count": 0,
+      "last_seen": "2026-06-29T21:03:45",
+      "daily_streak": 2,
+      "last_daily_answer": "2026-06-29"
+    },
+    "7186186293": {
+      "desc": "Описание не заполнено.",
+      "username": "s_1vvin",
+      "rating_sum": 0,
+      "rating_count": 0,
+      "last_seen": "2026-06-29T21:04:15",
+      "daily_streak": 1,
+      "last_daily_answer": "2026-06-29"
+    },
+    "1739360372": {
+      "desc": "Описание не заполнено.",
+      "username": "salatik_88",
+      "rating_sum": 0,
+      "rating_count": 0,
+      "last_seen": "2026-06-29T20:31:58",
+      "daily_streak": 0,
+      "last_daily_answer": ""
+    }
+  },
+  "daily_data": {
+    "current_question": "С кем ты хотел бы начать общаться?",
+    "current_topic": "драмы",
+    "question_date": "2026-06-30",
+    "topic_date": "2026-06-29",
+    "poll_date": "2026-06-30",
+    "hot_date": "2026-06-29",
+    "online_ping_at": "2026-06-29 20"
+  },
+  "hot_messages": [
+    {
+      "id": 1,
+      "user_id": 8550437617,
+      "text": "моя мама",
+      "likes": 1,
+      "liked_by": [
+        6644964102
+      ],
+      "date": "2026-06-22",
+      "created_at": "2026-06-22T15:43:46"
+    },
+    {
+      "id": 2,
+      "user_id": 7976641785,
+      "text": "Вставать в 12 а не в 16:00",
+      "likes": 0,
+      "liked_by": [],
+      "date": "2026-06-22",
+      "created_at": "2026-06-22T17:09:10"
+    },
+    {
+      "id": 3,
+      "user_id": 8550437617,
+      "text": "математичка",
+      "likes": 0,
+      "liked_by": [],
+      "date": "2026-06-22",
+      "created_at": "2026-06-22T19:31:09"
+    },
+    {
+      "id": 4,
+      "user_id": 8550437617,
+      "text": "математичка заипала",
+      "likes": 1,
+      "liked_by": [
+        8752230561
+      ],
+      "date": "2026-06-23",
+      "created_at": "2026-06-23T08:49:01"
+    },
+    {
+      "id": 5,
+      "user_id": 8843953577,
+      "text": "Хм",
+      "likes": 0,
+      "liked_by": [],
+      "date": "2026-06-24",
+      "created_at": "2026-06-24T12:03:22"
+    },
+    {
+      "id": 6,
+      "user_id": 8910678507,
+      "text": "так да это же @JustLoxde",
+      "likes": 1,
+      "liked_by": [
+        8910678507
+      ],
+      "date": "2026-06-24",
+      "created_at": "2026-06-24T14:12:01"
+    },
+    {
+      "id": 7,
+      "user_id": 7614715492,
+      "text": "Возможно",
+      "likes": 0,
+      "liked_by": [],
+      "date": "2026-06-24",
+      "created_at": "2026-06-24T14:14:28"
+    },
+    {
+      "id": 8,
+      "user_id": 7976641785,
+      "text": "Порно",
+      "likes": 1,
+      "liked_by": [
+        8843953577
+      ],
+      "date": "2026-06-24",
+      "created_at": "2026-06-24T14:18:49"
+    },
+    {
+      "id": 9,
+      "user_id": 8843953577,
+      "text": "Я б дала",
+      "likes": 2,
+      "liked_by": [
+        7687785267,
+        8910678507
+      ],
+      "date": "2026-06-24",
+      "created_at": "2026-06-24T22:01:07"
+    },
+    {
+      "id": 10,
+      "user_id": 7687785267,
+      "text": "Драчить хочу",
+      "likes": 1,
+      "liked_by": [
+        7687785267
+      ],
+      "date": "2026-06-24",
+      "created_at": "2026-06-24T22:42:26"
+    },
+    {
+      "id": 11,
+      "user_id": 8910678507,
+      "text": "обняла",
+      "likes": 0,
+      "liked_by": [],
+      "date": "2026-06-24",
+      "created_at": "2026-06-24T22:47:30"
+    },
+    {
+      "id": 12,
+      "user_id": 8910678507,
+      "text": "Салимке",
+      "likes": 1,
+      "liked_by": [
+        7614715492
+      ],
+      "date": "2026-06-25",
+      "created_at": "2026-06-25T12:34:05"
+    },
+    {
+      "id": 13,
+      "user_id": 8550437617,
+      "text": "Никто. Я одинок",
+      "likes": 1,
+      "liked_by": [
+        7976641785
+      ],
+      "date": "2026-06-28",
+      "created_at": "2026-06-28T04:09:15"
+    },
+    {
+      "id": 14,
+      "user_id": 8634303986,
+      "text": "СОСИ ЗУЙ",
+      "likes": 0,
+      "liked_by": [],
+      "date": "2026-06-28",
+      "created_at": "2026-06-28T16:20:59"
+    },
+    {
+      "id": 15,
+      "user_id": 7186186293,
+      "text": "длинноволосый чурбик, незнаю чем он мне понравился",
+      "likes": 0,
+      "liked_by": [],
+      "date": "2026-06-29",
+      "created_at": "2026-06-29T17:01:21"
+    },
+    {
+      "id": 16,
+      "user_id": 8634303986,
+      "text": "Салим Харош",
+      "likes": 2,
+      "liked_by": [
+        7186186293,
+        7614715492
+      ],
+      "date": "2026-06-29",
+      "created_at": "2026-06-29T21:03:45"
+    }
+  ]
+}

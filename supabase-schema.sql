@@ -17,8 +17,12 @@ CREATE TABLE IF NOT EXISTS categories (
 CREATE TABLE IF NOT EXISTS products (
   id TEXT PRIMARY KEY,
   name TEXT NOT NULL,
+  name_az TEXT DEFAULT '',
+  name_ru TEXT DEFAULT '',
   slug TEXT UNIQUE NOT NULL,
   description TEXT,
+  description_az TEXT DEFAULT '',
+  description_ru TEXT DEFAULT '',
   price REAL NOT NULL,
   old_price REAL,
   discount INTEGER DEFAULT 0,

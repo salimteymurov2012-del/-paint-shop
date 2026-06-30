@@ -158,8 +158,8 @@ function renderAdminCategories() {
     <td>${c.product_count || 0}</td>
     <td><input type="number" value="${c.order_index}" style="width:60px;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:4px;border-radius:4px" onchange="updateCategorySort('${c.id}', this.value)"></td>
     <td class="actions">
-      <button class="btn btn-sm btn-outline" onclick="openCategoryModal('${c.id}')">✏️</button>
-      <button class="btn btn-sm btn-danger" onclick="deleteCategory('${c.id}')">🗑️</button>
+      <button class="btn btn-sm btn-outline" onclick="openCategoryModal('${c.id}')">Edit</button>
+      <button class="btn btn-sm btn-danger" onclick="deleteCategory('${c.id}')">Del</button>
     </td>
   </tr>`).join('');
 }
@@ -227,16 +227,16 @@ function renderAdminProducts(products) {
   tbody.innerHTML = list.map(p => {
     const mainImg = p.images && p.images.length ? p.images.find(i => i.is_main) || p.images[0] : null;
     return `<tr>
-      <td>${mainImg ? `<img src="/uploads/${mainImg.filename}" class="table-img">` : '🎨'}</td>
+      <td>${mainImg ? `<img src="/uploads/${mainImg.filename}" class="table-img">` : '<span style="color:var(--text-muted)">—</span>'}</td>
       <td><strong>${p.name}</strong><br><span style="font-size:12px;color:var(--text-secondary)">${p.difficulty}</span></td>
       <td>${p.category_name || '—'}</td>
       <td>${formatPrice(p.price)} ₼${p.discount ? ` <span style="color:var(--success);font-size:12px">-${p.discount_percent}%</span>` : ''}</td>
       <td>${p.stock}</td>
       <td><span class="status-badge ${p.visible ? 'status-active' : 'status-hidden'}">${p.visible ? 'Активен' : 'Скрыт'}</span></td>
       <td class="actions">
-        <button class="btn btn-sm btn-outline" onclick="openProductModal('${p.id}')">✏️</button>
-        <button class="btn btn-sm btn-outline" onclick="toggleVisibility('${p.id}', ${p.visible})">${p.visible ? '🙈' : '👁️'}</button>
-        <button class="btn btn-sm btn-danger" onclick="deleteProduct('${p.id}')">🗑️</button>
+        <button class="btn btn-sm btn-outline" onclick="openProductModal('${p.id}')">Edit</button>
+        <button class="btn btn-sm btn-outline" onclick="toggleVisibility('${p.id}', ${p.visible})">${p.visible ? 'Hide' : 'Show'}</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteProduct('${p.id}')">Del</button>
       </td>
     </tr>`;
   }).join('');
@@ -249,7 +249,7 @@ function openProductModal(id) {
     <div style="display:inline-block;margin:4px;position:relative">
       <img src="/uploads/${img.filename}" style="width:80px;height:60px;object-fit:cover;border-radius:4px;${img.is_main ? 'border:2px solid var(--gold)' : ''}">
       <div style="display:flex;gap:4px;margin-top:4px">
-        ${!img.is_main ? `<button class="btn btn-sm btn-outline" onclick="setMainImage('${id}','${img.id}')">⭐</button>` : '<span style="font-size:12px;color:var(--gold)">Главная</span>'}
+        ${!img.is_main ? `<button class="btn btn-sm btn-outline" onclick="setMainImage('${id}','${img.id}')">Main</button>` : '<span style="font-size:12px;color:var(--accent-terracotta);font-weight:600">Main</span>'}
         <button class="btn btn-sm btn-danger" onclick="deleteImage('${id}','${img.id}')">✕</button>
       </div>
     </div>`).join('') : '';
@@ -257,7 +257,11 @@ function openProductModal(id) {
   document.getElementById('admin-modal-body').innerHTML = `<h2>${id ? 'Редактировать' : 'Новый'} товар</h2>
     <form id="product-form" onsubmit="saveProduct(event, '${id || ''}')">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px" class="product-form-grid">
-        <div class="modal-field"><label>Название *</label><input type="text" name="name" value="${p ? p.name : ''}" required></div>
+        <div class="modal-field" style="grid-column:1/-1"><label>Название</label>
+          <div class="lang-tabs"><button type="button" class="lang-tab active" onclick="switchLangTab(this,'name_az','name_ru',event)">AZ</button><button type="button" class="lang-tab" onclick="switchLangTab(this,'name_ru','name_az',event)">RU</button></div>
+          <input type="text" name="name_az" value="${p ? p.name_az || p.name : ''}" placeholder="Название (AZ)">
+          <input type="text" name="name_ru" value="${p ? p.name_ru || p.name : ''}" placeholder="Название (RU)" style="display:none">
+        </div>
         <div class="modal-field"><label>Категория</label><select name="category_id"><option value="">Без категории</option>${catOpts}</select></div>
         <div class="modal-field"><label>Цена *</label><input type="number" name="price" step="0.01" value="${p ? p.price : ''}" required></div>
         <div class="modal-field"><label>Старая цена</label><input type="number" name="old_price" step="0.01" value="${p && p.old_price ? p.old_price : ''}"></div>
@@ -272,7 +276,11 @@ function openProductModal(id) {
         <div class="modal-field"><label>Количество на складе</label><input type="number" name="stock" value="${p ? p.stock : 0}"></div>
         <div class="modal-field"><label>Размеры (через запятую)</label><input type="text" name="sizes" value="${p && p.sizes ? JSON.parse(p.sizes).join(', ') : ''}"></div>
         <div class="modal-field" style="grid-column:1/-1"><label>Комплектация</label><input type="text" name="includes" value="${p ? p.includes : ''}"></div>
-        <div class="modal-field" style="grid-column:1/-1"><label>Описание</label><textarea name="description" rows="4">${p ? p.description : ''}</textarea></div>
+        <div class="modal-field" style="grid-column:1/-1"><label>Описание</label>
+          <div class="lang-tabs"><button type="button" class="lang-tab active" onclick="switchLangTab(this,'description_az','description_ru',event)">AZ</button><button type="button" class="lang-tab" onclick="switchLangTab(this,'description_ru','description_az',event)">RU</button></div>
+          <textarea name="description_az" rows="4" placeholder="Описание (AZ)">${p ? p.description_az || p.description || '' : ''}</textarea>
+          <textarea name="description_ru" rows="4" placeholder="Описание (RU)" style="display:none">${p ? p.description_ru || p.description || '' : ''}</textarea>
+        </div>
         <div class="modal-field" style="grid-column:1/-1">
           <label>Метки</label>
           <div class="checkbox-row">
@@ -300,6 +308,9 @@ async function saveProduct(e, id) {
   e.preventDefault();
   const form = document.getElementById('product-form');
   const formData = new FormData(form);
+  // Set fallback name/description from AZ variant
+  if (!formData.get('name')) formData.set('name', formData.get('name_az') || '');
+  if (!formData.get('description')) formData.set('description', formData.get('description_az') || '');
   // Parse sizes
   const sizesStr = formData.get('sizes');
   formData.set('sizes', JSON.stringify(sizesStr ? sizesStr.split(',').map(s => s.trim()).filter(Boolean) : []));
@@ -377,8 +388,8 @@ async function loadOrders(status) {
       </td>
       <td style="font-size:12px;color:var(--text-secondary)">${new Date(o.created_at).toLocaleString('ru-RU')}</td>
       <td class="actions">
-        <button class="btn btn-sm btn-outline" onclick="viewOrder('${o.id}')">👁️</button>
-        <button class="btn btn-sm btn-danger" onclick="deleteOrder('${o.id}')">🗑️</button>
+        <button class="btn btn-sm btn-outline" onclick="viewOrder('${o.id}')">View</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteOrder('${o.id}')">Del</button>
       </td>
     </tr>`).join('');
   } catch(e) { console.error(e); }
@@ -443,8 +454,8 @@ async function loadBanners() {
       <td><span class="status-badge ${b.is_active ? 'status-active' : 'status-hidden'}">${b.is_active ? 'Активен' : 'Отключён'}</span></td>
       <td>${b.order_index}</td>
       <td class="actions">
-        <button class="btn btn-sm btn-outline" onclick="openBannerModal('${b.id}')">✏️</button>
-        <button class="btn btn-sm btn-danger" onclick="deleteBanner('${b.id}')">🗑️</button>
+        <button class="btn btn-sm btn-outline" onclick="openBannerModal('${b.id}')">Edit</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteBanner('${b.id}')">Del</button>
       </td>
     </tr>`).join('');
   } catch(e) { console.error(e); }
@@ -512,7 +523,7 @@ async function loadPromocodes() {
       <td>${c.used_count}</td>
       <td>${c.max_uses || '∞'}</td>
       <td><span class="status-badge ${c.is_active ? 'status-active' : 'status-hidden'}">${c.is_active ? 'Активен' : 'Неактивен'}</span></td>
-      <td class="actions"><button class="btn btn-sm btn-danger" onclick="deletePromocode('${c.id}')">🗑️</button></td>
+      <td class="actions"><button class="btn btn-sm btn-danger" onclick="deletePromocode('${c.id}')">Del</button></td>
     </tr>`).join('');
   } catch(e) { console.error(e); }
 }
@@ -683,6 +694,15 @@ function toggleSidebar() {
 function closeSidebar() {
   document.getElementById('sidebar').classList.remove('open');
   document.getElementById('sidebar-overlay').classList.remove('open');
+}
+
+// Language tab switcher for product form
+function switchLangTab(btn, showName, hideName, e) {
+  const parent = btn.closest('.modal-field');
+  parent.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  parent.querySelector(`[name="${showName}"]`).style.display = '';
+  parent.querySelector(`[name="${hideName}"]`).style.display = 'none';
 }
 
 // Close sidebar on nav click on mobile

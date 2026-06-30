@@ -140,9 +140,9 @@ app.post('/api/admin/products', adminAuth, upload.array('images', 10), async (re
   const id = uuidv4();
   const slug = req.body.name.toLowerCase().replace(/[^a-zа-яё0-9]+/g, '-').replace(/^-|-$/g, '') + '-' + Date.now();
   const data = req.body;
-  await run(`INSERT INTO products (id, name, slug, description, price, old_price, discount, discount_percent, category_id, sizes, difficulty, colors_count, manufacturer, includes, stock, visible, is_new, is_bestseller, is_recommended, is_limited, seo_title, seo_description)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [
-    id, data.name, slug, data.description || '', parseFloat(data.price) || 0,
+  await run(`INSERT INTO products (id, name, name_az, name_ru, slug, description, description_az, description_ru, price, old_price, discount, discount_percent, category_id, sizes, difficulty, colors_count, manufacturer, includes, stock, visible, is_new, is_bestseller, is_recommended, is_limited, seo_title, seo_description)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [
+    id, data.name, data.name_az || '', data.name_ru || '', slug, data.description || '', data.description_az || '', data.description_ru || '', parseFloat(data.price) || 0,
     data.old_price ? parseFloat(data.old_price) : 0,
     data.old_price ? 1 : 0, parseInt(data.discount_percent) || 0,
     data.category_id || null, data.sizes || '[]', data.difficulty || 'Средний',
@@ -167,8 +167,8 @@ app.post('/api/admin/products', adminAuth, upload.array('images', 10), async (re
 app.put('/api/admin/products/:id', adminAuth, upload.array('images', 10), async (req, res) => {
   const data = req.body;
   const id = req.params.id;
-    await run(`UPDATE products SET name=?, description=?, price=?, old_price=?, discount=?, discount_percent=?, category_id=?, sizes=?, difficulty=?, colors_count=?, manufacturer=?, includes=?, stock=?, visible=?, is_new=?, is_bestseller=?, is_recommended=?, is_limited=?, seo_title=?, seo_description=?, updated_at=CURRENT_TIMESTAMP WHERE id=?`, [
-    data.name, data.description || '', parseFloat(data.price) || 0,
+    await run(`UPDATE products SET name=?, name_az=?, name_ru=?, description=?, description_az=?, description_ru=?, price=?, old_price=?, discount=?, discount_percent=?, category_id=?, sizes=?, difficulty=?, colors_count=?, manufacturer=?, includes=?, stock=?, visible=?, is_new=?, is_bestseller=?, is_recommended=?, is_limited=?, seo_title=?, seo_description=?, updated_at=CURRENT_TIMESTAMP WHERE id=?`, [
+    data.name, data.name_az || '', data.name_ru || '', data.description || '', data.description_az || '', data.description_ru || '', parseFloat(data.price) || 0,
     data.old_price ? parseFloat(data.old_price) : 0,
     data.old_price ? 1 : 0, parseInt(data.discount_percent) || 0,
     data.category_id || null, data.sizes || '[]', data.difficulty || 'Средний',

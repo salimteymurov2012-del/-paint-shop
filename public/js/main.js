@@ -6,6 +6,13 @@ let allCategories = [];
 let allSettings = {};
 let currentLang = localStorage.getItem('shop_lang') || 'az';
 
+// Language-aware field accessor
+function langVal(p, field) {
+  const val = p[field + '_' + currentLang];
+  const fallback = p[field];
+  return (val && val.trim()) ? val : (fallback || '');
+}
+
 // =========== TRANSLATIONS ===========
 const lang = {
   az: {
@@ -14,7 +21,7 @@ const lang = {
     nav_catalog: 'Kataloq', nav_about: 'Haqqımızda', nav_contact: 'Əlaqə',
     hero_title: 'Yaradıcılığa ilham tap',
     hero_subtitle: 'Rəqəmlərlə rəsm dəstləri — yaradıcılığı zövqə çevirir.',
-    hero_btn1: 'Rəsm seç', hero_btn2: 'Daha çox',
+    hero_btn1: 'Sifariş et', hero_btn2: 'Daha çox',
     f1_title: 'Premium keyfiyyət', f1_desc: 'Təbii kətan və parlaq boyalar',
 
     f3_title: 'İstənilən səviyyə', f3_desc: 'Yeni başlayandan peşəkara qədər',
@@ -59,7 +66,7 @@ const lang = {
     nav_catalog: 'Каталог', nav_about: 'О нас', nav_contact: 'Контакты',
     hero_title: 'Создай собственный шедевр',
     hero_subtitle: 'Картины по номерам, которые превращают творчество в удовольствие.',
-    hero_btn1: 'Выбрать картину', hero_btn2: 'Узнать больше',
+    hero_btn1: 'Создать заказ', hero_btn2: 'Узнать больше',
     f1_title: 'Премиум качество', f1_desc: 'Натуральные холсты и яркие краски',
 
     f3_title: 'Для любого уровня', f3_desc: 'От новичка до профи',
@@ -300,10 +307,10 @@ function renderBlock(title, products) {
           const imgSrc = p.image ? `/uploads/${p.image}` : null;
           return `<div class="home-product-card" onclick="showProduct('${p.id}')">
             <div class="hp-image">
-        ${imgSrc ? `<img src="${imgSrc}" alt="${p.name.replace(/"/g, '&quot;')}" loading="lazy">` : '<span class="placeholder-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:48px;height:48px"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg></span>'}
+${imgSrc ? `<img src="${imgSrc}" alt="${langVal(p, 'name').replace(/"/g, '&quot;')}" loading="lazy">` : '<span class="placeholder-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:48px;height:48px"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg></span>'}
             </div>
             <div class="hp-info">
-              <div class="hp-name">${p.name}</div>
+              <div class="hp-name">${langVal(p, 'name')}</div>
               <div>
                 <span class="hp-price">${formatPrice(p.price)} ₼</span>
                 ${p.discount && p.old_price ? `<span class="hp-old-price">${formatPrice(p.old_price)} ₼</span>` : ''}
@@ -350,7 +357,7 @@ function renderCatalog() {
     const hasDiscount = p.discount && p.old_price;
     return `<div class="product-card" onclick="showProduct('${p.id}')">
       <div class="product-image">
-        ${imgSrc ? `<img src="${imgSrc}" alt="${p.name.replace(/"/g, '&quot;')}" loading="lazy">` : '<span class="placeholder-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:64px;height:64px"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg></span>'}
+        ${imgSrc ? `<img src="${imgSrc}" alt="${langVal(p, 'name').replace(/"/g, '&quot;')}" loading="lazy">` : '<span class="placeholder-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:64px;height:64px"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg></span>'}
         <div class="product-badges">
           ${p.is_new ? `<span class="badge badge-new">${t('home_new')}</span>` : ''}
           ${p.is_bestseller ? `<span class="badge badge-bestseller">${t('home_bestseller')}</span>` : ''}
@@ -360,7 +367,7 @@ function renderCatalog() {
       </div>
       <div class="product-info">
         <div class="product-category">${p.category_name || ''}</div>
-        <div class="product-name">${p.name}</div>
+        <div class="product-name">${langVal(p, 'name')}</div>
         <div class="product-meta">
           <span><span class="diff-dot diff-${diffDots[p.difficulty] || 'a'}" style="background:${p.difficulty === 'Лёгкий' ? '#9AAC8E' : p.difficulty === 'Средний' ? '#B8945A' : p.difficulty === 'Сложный' ? '#7A2E3A' : '#9C8B7A'}"></span> ${p.difficulty === 'Лёгкий' ? t('diff_easy') : p.difficulty === 'Средний' ? t('diff_medium') : p.difficulty === 'Сложный' ? t('diff_hard') : p.difficulty}</span>
           <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;vertical-align:middle;margin-right:3px"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg> ${p.colors_count} ${currentLang === 'az' ? 'rəng' : 'цв.'}</span>
@@ -400,7 +407,7 @@ async function showProduct(id) {
     container.innerHTML = `<div class="product-detail${p.images && p.images.length ? ' gallery-loaded' : ''}">
       <div class="product-detail-gallery">
         <div class="product-detail-main-image">
-          ${mainImg ? `<img src="/uploads/${mainImg.filename}" alt="${p.name.replace(/"/g, '&quot;')}" id="main-product-image">` : '<span style="opacity:0.3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:80px;height:80px;color:var(--text-muted)"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg></span>'}
+          ${mainImg ? `<img src="/uploads/${mainImg.filename}" alt="${langVal(p, 'name').replace(/"/g, '&quot;')}" id="main-product-image">` : '<span style="opacity:0.3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:80px;height:80px;color:var(--text-muted)"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg></span>'}
         </div>
         ${p.images && p.images.length > 1 ? `<div class="product-detail-thumbs">
           ${p.images.map(img => `<img src="/uploads/${img.filename}" class="${img.is_main ? 'active' : ''}" onclick="document.getElementById('main-product-image').src='/uploads/${img.filename}';document.querySelectorAll('.product-detail-thumbs img').forEach(el=>el.classList.remove('active'));this.classList.add('active')">`).join('')}
@@ -408,15 +415,15 @@ async function showProduct(id) {
       </div>
       <div class="product-detail-purchase">
         <div class="purchase-card">
-          <h2 class="purchase-title">${p.name}</h2>
-          ${p.description ? `<div class="purchase-description">${p.description}</div>` : ''}
+          <h2 class="purchase-title">${langVal(p, 'name')}</h2>
+          ${langVal(p, 'description') ? `<div class="purchase-description">${langVal(p, 'description')}</div>` : ''}
           <div class="purchase-price">
             <span class="current">${formatPrice(p.price)} ₼</span>
             ${hasDiscount ? `<span class="old">${formatPrice(p.old_price)} ₼</span>
             <span class="discount-badge">-${p.discount_percent}%</span>` : ''}
           </div>
           <div class="purchase-actions">
-            <button class="btn btn-primary" onclick="addToCart('${p.id}','${p.name.replace(/'/g, "\\'").replace(/"/g, '&quot;')}',${p.price})">${t('product_cart')}</button>
+            <button class="btn btn-primary" onclick="addToCart('${p.id}','${langVal(p, 'name').replace(/'/g, "\\'").replace(/"/g, '&quot;')}',${p.price})">${t('product_cart')}</button>
             <button class="btn btn-outline" onclick="showSection('catalog')">${t('product_continue')}</button>
           </div>
           <div class="purchase-specs">

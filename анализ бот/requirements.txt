@@ -1,0 +1,7 @@
+python-telegram-bot==21.6
+opencv-python
+mediapipe
+numpy
+pillow
+onnxruntime
+insightface
