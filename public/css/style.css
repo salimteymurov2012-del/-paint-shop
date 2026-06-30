@@ -87,8 +87,7 @@ body::after {
     radial-gradient(ellipse 90% 90% at 50% 85%, rgba(154, 172, 142, 0.30) 0%, transparent 65%),
     radial-gradient(circle 600px at 20% 50%, rgba(198, 127, 78, 0.20) 0%, transparent 100%),
     radial-gradient(circle 700px at 80% 60%, rgba(184, 148, 90, 0.18) 0%, transparent 100%),
-    radial-gradient(circle 800px at 35% 40%, rgba(122, 46, 58, 0.45) 0%, transparent 65%),
-    radial-gradient(circle 600px at 70% 70%, rgba(122, 46, 58, 0.40) 0%, transparent 60%);
+    radial-gradient(circle 800px at 35% 40%, rgba(122, 46, 58, 0.20) 0%, transparent 65%);
   animation: glow-shift 8s ease-in-out infinite alternate;
 }
 
@@ -196,7 +195,7 @@ img { max-width: 100%; height: auto; display: block; }
 #particles-canvas {
   position: fixed; inset: 0; z-index: 0;
   pointer-events: none;
-  opacity: 0.8;
+  opacity: 0.3;
 }
 
 /* =========== HEADER =========== */
@@ -304,10 +303,6 @@ img { max-width: 100%; height: auto; display: block; }
   width: 600px; height: 600px; top: 25%; left: 50%; animation-delay: -9s;
   background: radial-gradient(circle, rgba(122, 46, 58, 0.20) 0%, transparent 70%);
 }
-.swirl-4 {
-  width: 450px; height: 450px; bottom: 5%; right: 15%; animation-delay: -3s;
-  background: radial-gradient(circle, rgba(122, 46, 58, 0.15) 0%, transparent 70%);
-}
 @keyframes swirl-float {
   0%, 100% { transform: translate(0, 0) scale(1); }
   33% { transform: translate(25px, -35px) scale(1.03); }
@@ -341,9 +336,8 @@ img { max-width: 100%; height: auto; display: block; }
 
 .hero-brushes { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
 .brush-stroke {
-  position: absolute; height: 6px; border-radius: 4px;
-  opacity: 0.2;
-  filter: blur(1px);
+  position: absolute; height: 3px; border-radius: 2px;
+  opacity: 0.08;
 }
 .brush-1 { top: 18%; left: -80px; width: 350px;
   background: linear-gradient(90deg, transparent, var(--accent-terracotta), transparent);
@@ -351,134 +345,14 @@ img { max-width: 100%; height: auto; display: block; }
 .brush-2 { bottom: 30%; right: -80px; width: 300px;
   background: linear-gradient(90deg, transparent, var(--accent-olive), transparent);
   animation: brush-sweep 12s ease-in-out infinite 3s; }
-.brush-3 { top: 55%; left: 55%; width: 300px; height: 8px;
-  background: linear-gradient(90deg, transparent, rgba(122, 46, 58, 0.45), transparent);
+.brush-3 { top: 55%; left: 55%; width: 200px;
+  background: linear-gradient(90deg, transparent, var(--accent-burgundy), transparent);
   animation: brush-sweep 8s ease-in-out infinite 5s; }
-.brush-4 { top: 75%; left: -60px; width: 500px; height: 10px;
-  background: linear-gradient(90deg, transparent, rgba(122, 46, 58, 0.50), transparent);
-  animation: brush-sweep 12s ease-in-out infinite 1s; }
-.brush-5 { top: 10%; left: -40px; width: 600px; height: 8px;
-  background: linear-gradient(90deg, transparent, rgba(122, 46, 58, 0.40), transparent);
-  animation: brush-sweep 15s ease-in-out infinite 7s; }
 @keyframes brush-sweep {
   0%, 100% { transform: translateX(-100px) rotate(-15deg); opacity: 0; }
-  25% { opacity: 0.35; }
-  50% { transform: translateX(calc(100vw + 100px)) rotate(15deg); opacity: 0.20; }
+  25% { opacity: 0.12; }
+  50% { transform: translateX(calc(100vw + 100px)) rotate(15deg); opacity: 0.06; }
   75% { opacity: 0; }
-}
-
-/* Continuous paint drip effect */
-/* Animated paintbrush icon */
-.paint-brush-icon {
-  position: fixed;
-  pointer-events: none;
-  z-index: 0;
-  font-size: 32px;
-  opacity: 0.5;
-  animation: brush-float-across 18s ease-in-out infinite;
-  filter: drop-shadow(0 0 20px rgba(122, 46, 58, 0.6));
-}
-.paint-brush-icon:nth-child(10) {
-  top: 20%;
-  animation-delay: 0s;
-  animation-duration: 16s;
-}
-.paint-brush-icon:nth-child(11) {
-  top: 55%;
-  animation-delay: -6s;
-  animation-duration: 20s;
-}
-.paint-brush-icon:nth-child(12) {
-  top: 80%;
-  animation-delay: -12s;
-  animation-duration: 14s;
-}
-@keyframes brush-float-across {
-  0% { transform: translateX(-80px) rotate(-20deg); opacity: 0; }
-  10% { opacity: 0.6; }
-  50% { transform: translateX(calc(100vw + 80px)) rotate(10deg); opacity: 0.4; }
-  90% { opacity: 0; }
-  100% { transform: translateX(calc(100vw + 80px)) rotate(20deg); opacity: 0; }
-}
-
-.paint-drip {
-  position: fixed;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.35;
-  animation: drip-fall 6s ease-in infinite;
-}
-.paint-drip:nth-child(7) {
-  width: 3px; height: 120px;
-  left: 15%; top: -130px;
-  background: linear-gradient(180deg, rgba(122, 46, 58, 0.5), transparent);
-  animation-delay: 0s;
-  animation-duration: 5s;
-}
-.paint-drip:nth-child(8) {
-  width: 2px; height: 80px;
-  left: 42%; top: -90px;
-  background: linear-gradient(180deg, rgba(122, 46, 58, 0.4), transparent);
-  animation-delay: 2s;
-  animation-duration: 7s;
-}
-.paint-drip:nth-child(9) {
-  width: 4px; height: 150px;
-  left: 78%; top: -160px;
-  background: linear-gradient(180deg, rgba(122, 46, 58, 0.35), transparent);
-  animation-delay: 4s;
-  animation-duration: 6s;
-}
-@keyframes drip-fall {
-  0% { transform: translateY(0); opacity: 0; }
-  10% { opacity: 0.15; }
-  90% { opacity: 0.08; }
-  100% { transform: translateY(calc(100vh + 160px)); opacity: 0; }
-}
-
-/* Catalog brush painting overlay */
-.catalog-brush-overlay {
-  position: absolute; inset: 0; z-index: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-.catalog-brush-overlay .cat-brush {
-  position: absolute;
-  height: 8px;
-  border-radius: 4px;
-  opacity: 0;
-  filter: blur(2px);
-  animation: cat-brush-paint 6s ease-in-out infinite;
-}
-.cat-brush:nth-child(1) {
-  top: 15%; left: -100px; width: 400px;
-  background: linear-gradient(90deg, transparent, rgba(122, 46, 58, 0.30), transparent);
-  animation-delay: 0s;
-}
-.cat-brush:nth-child(2) {
-  top: 40%; left: -80px; width: 500px; height: 6px;
-  background: linear-gradient(90deg, transparent, rgba(122, 46, 58, 0.25), transparent);
-  animation-delay: 2s;
-  animation-duration: 8s;
-}
-.cat-brush:nth-child(3) {
-  top: 65%; left: -60px; width: 350px; height: 10px;
-  background: linear-gradient(90deg, transparent, rgba(122, 46, 58, 0.20), transparent);
-  animation-delay: 4s;
-  animation-duration: 7s;
-}
-.cat-brush:nth-child(4) {
-  top: 85%; left: -120px; width: 600px; height: 5px;
-  background: linear-gradient(90deg, transparent, rgba(122, 46, 58, 0.25), transparent);
-  animation-delay: 1s;
-  animation-duration: 9s;
-}
-@keyframes cat-brush-paint {
-  0% { transform: translateX(0) rotate(-10deg); opacity: 0; }
-  20% { opacity: 0.25; }
-  50% { transform: translateX(calc(100vw + 120px)) rotate(5deg); opacity: 0.15; }
-  80% { opacity: 0; }
-  100% { transform: translateX(calc(100vw + 120px)) rotate(10deg); opacity: 0; }
 }
 
 /* =========== BUTTONS =========== */
@@ -608,16 +482,7 @@ img { max-width: 100%; height: auto; display: block; }
   opacity: 0; transform: translateY(24px);
   box-shadow: 0 4px 20px var(--shadow);
 }
-.product-card.visible {
-  opacity: 1;
-  transform: translateY(0);
-  animation: card-paint-reveal 0.8s ease-out;
-}
-@keyframes card-paint-reveal {
-  0% { opacity: 0; transform: translateY(30px) scaleX(0.95); filter: blur(4px); }
-  50% { filter: blur(0); }
-  100% { opacity: 1; transform: translateY(0) scaleX(1); }
-}
+.product-card.visible { opacity: 1; transform: translateY(0); }
 .product-card:hover {
   transform: translateY(-8px) scale(1.01);
   box-shadow: 0 16px 48px var(--shadow-md), 0 0 0 2px var(--accent-terracotta);
