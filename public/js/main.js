@@ -406,11 +406,6 @@ async function showProduct(id) {
       </div>
       <div class="product-detail-info">
         <h2>${p.name}</h2>
-        <div class="product-detail-price">
-          <span class="current">${formatPrice(p.price)} ₼</span>
-          ${hasDiscount ? `<span class="old">${formatPrice(p.old_price)} ₼</span>
-          <span class="discount-badge">-${p.discount_percent}%</span>` : ''}
-        </div>
         ${p.description ? `<div class="product-detail-description">${p.description}</div>` : ''}
         <div class="product-detail-specs">
           <div class="spec-item"><div class="spec-label">${currentLang === 'az' ? 'Çətinlik' : 'Сложность'}</div><div class="spec-value">${diffIcons[p.difficulty] || ''} ${p.difficulty === 'Лёгкий' ? t('diff_easy') : p.difficulty === 'Средний' ? t('diff_medium') : p.difficulty === 'Сложный' ? t('diff_hard') : p.difficulty}</div></div>
@@ -419,10 +414,19 @@ async function showProduct(id) {
           ${sizes.length ? `<div class="spec-item"><div class="spec-label">${currentLang === 'az' ? 'Ölçülər' : 'Размеры'}</div><div class="spec-value">${sizes.join(', ')}</div></div>` : ''}
           <div class="spec-item"><div class="spec-label">${currentLang === 'az' ? 'Stok' : 'В наличии'}</div><div class="spec-value">${p.stock > 0 ? `${p.stock} ${currentLang === 'az' ? 'əd.' : 'шт.'}` : currentLang === 'az' ? 'Yoxdur' : 'Нет в наличии'}</div></div>
         </div>
-        ${p.includes ? `<div style="margin-bottom:24px"><div class="spec-label" style="margin-bottom:8px">${currentLang === 'az' ? 'Komplektasiya' : 'Комплектация'}</div><div style="color:rgba(240,236,227,0.8)">${p.includes}</div></div>` : ''}
-        <div class="product-detail-actions">
-          <button class="btn btn-primary" onclick="addToCart('${p.id}','${p.name.replace(/'/g, "\\'")}',${p.price})">${t('product_cart')}</button>
-          <button class="btn btn-outline" onclick="showSection('catalog')">${t('product_continue')}</button>
+        ${p.includes ? `<div style="margin-top:24px"><div class="spec-label" style="margin-bottom:8px">${currentLang === 'az' ? 'Komplektasiya' : 'Комплектация'}</div><div style="color:rgba(240,236,227,0.8)">${p.includes}</div></div>` : ''}
+      </div>
+      <div class="product-detail-purchase">
+        <div class="purchase-card">
+          <div class="purchase-price">
+            <span class="current">${formatPrice(p.price)} ₼</span>
+            ${hasDiscount ? `<span class="old">${formatPrice(p.old_price)} ₼</span>
+            <span class="discount-badge">-${p.discount_percent}%</span>` : ''}
+          </div>
+          <div class="purchase-actions">
+            <button class="btn btn-primary" onclick="addToCart('${p.id}','${p.name.replace(/'/g, "\\'")}',${p.price})">${t('product_cart')}</button>
+            <button class="btn btn-outline" onclick="showSection('catalog')">${t('product_continue')}</button>
+          </div>
         </div>
       </div>
     </div>`;

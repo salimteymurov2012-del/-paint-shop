@@ -371,9 +371,10 @@ img { max-width: 100%; height: auto; display: block; }
 }
 .back-btn:hover { color: var(--gold); }
 .product-detail {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
+  display: grid; grid-template-columns: 1fr 1.2fr 300px; gap: 32px;
   padding-bottom: 80px;
   animation: fadeInUp 0.5s ease-out;
+  align-items: start;
 }
 .product-detail-gallery { position: relative; }
 .product-detail-main-image {
@@ -411,24 +412,6 @@ img { max-width: 100%; height: auto; display: block; }
   line-height: 1.2; letter-spacing: -0.3px;
   animation: fadeInUp 0.5s ease-out 0.1s both;
 }
-.product-detail-price {
-  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
-  animation: fadeInUp 0.5s ease-out 0.15s both;
-}
-.product-detail-price .current {
-  font-size: 32px; font-weight: 800; color: var(--light-gold);
-  letter-spacing: -0.5px;
-}
-.product-detail-price .old {
-  font-size: 18px; color: rgba(240,236,227,0.35);
-  text-decoration: line-through;
-}
-.product-detail-price .discount-badge {
-  display: inline-flex; align-items: center;
-  background: rgba(46, 204, 113, 0.15); color: #2ecc71;
-  padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 700;
-  border: 1px solid rgba(46, 204, 113, 0.25);
-}
 .product-detail-description {
   color: rgba(240,236,227,0.75); line-height: 1.8; font-size: 15px;
   animation: fadeInUp 0.5s ease-out 0.2s both;
@@ -456,41 +439,71 @@ img { max-width: 100%; height: auto; display: block; }
 .spec-value {
   font-size: 15px; color: var(--off-white); font-weight: 500;
 }
-.product-detail-actions {
-  display: flex; gap: 12px; flex-wrap: wrap;
-  margin-top: 4px;
-  animation: fadeInUp 0.5s ease-out 0.3s both;
+
+/* =========== PURCHASE CARD (sticky, Tap.az-like) =========== */
+.product-detail-purchase {
+  position: sticky; top: 100px;
 }
-.product-detail-actions .btn {
-  flex: 1; min-width: 180px; height: 52px;
-  justify-content: center; font-size: 16px; font-weight: 600;
+.purchase-card {
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  backdrop-filter: blur(10px);
+  display: flex; flex-direction: column; gap: 24px;
+  animation: fadeInUp 0.5s ease-out 0.15s both;
+}
+.purchase-price {
+  display: flex; flex-direction: column; gap: 6px;
+}
+.purchase-price .current {
+  font-size: 36px; font-weight: 800; color: var(--light-gold);
+  letter-spacing: -0.5px; line-height: 1.1;
+}
+.purchase-price .old {
+  font-size: 18px; color: rgba(240,236,227,0.35);
+  text-decoration: line-through;
+}
+.purchase-price .discount-badge {
+  align-self: flex-start;
+  background: rgba(46, 204, 113, 0.15); color: #2ecc71;
+  padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 700;
+  border: 1px solid rgba(46, 204, 113, 0.25);
+  margin-top: 4px;
+}
+.purchase-actions {
+  display: flex; flex-direction: column; gap: 10px;
+}
+.purchase-actions .btn {
+  width: 100%; height: 52px; justify-content: center;
+  font-size: 16px; font-weight: 600;
   border-radius: var(--radius-md);
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.product-detail-actions .btn:active { transform: scale(0.97); }
-.product-detail-actions .btn-primary {
+.purchase-actions .btn:active { transform: scale(0.97); }
+.purchase-actions .btn-primary {
   background: linear-gradient(135deg, var(--gold), #b89130);
   color: var(--deep-blue);
   box-shadow: 0 4px 20px rgba(212,168,67,0.3);
 }
-.product-detail-actions .btn-primary:hover {
+.purchase-actions .btn-primary:hover {
   box-shadow: 0 8px 35px rgba(212,168,67,0.5);
   transform: translateY(-2px);
 }
-.product-detail-actions .btn-primary:active {
+.purchase-actions .btn-primary:active {
   box-shadow: 0 2px 10px rgba(212,168,67,0.3);
   transform: translateY(0) scale(0.97);
 }
-.product-detail-actions .btn-outline {
+.purchase-actions .btn-outline {
   background: transparent; border: 2px solid var(--gold);
   color: var(--gold);
 }
-.product-detail-actions .btn-outline:hover {
+.purchase-actions .btn-outline:hover {
   background: rgba(212, 168, 67, 0.08);
   box-shadow: 0 4px 20px rgba(212,168,67,0.15);
   transform: translateY(-2px);
 }
-.product-detail-actions .btn-outline:active {
+.purchase-actions .btn-outline:active {
   transform: translateY(0) scale(0.97);
 }
 
