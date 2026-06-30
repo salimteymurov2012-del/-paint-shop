@@ -113,11 +113,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('preloader').classList.add('hidden');
   }, 800);
 
-  const reviewOrderId = new URLSearchParams(window.location.search).get('review');
-  if (reviewOrderId) {
-    setTimeout(() => showReviewForOrder(reviewOrderId), 1500);
-  }
-
   window.addEventListener('scroll', () => {
     document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
     const hero = document.getElementById('hero');
@@ -400,7 +395,7 @@ async function showProduct(id) {
     let sizes = [];
     try { sizes = JSON.parse(p.sizes || '[]'); } catch(e) {}
 
-    container.innerHTML = `<div class="product-detail">
+    container.innerHTML = `<div class="product-detail${p.images && p.images.length ? ' gallery-loaded' : ''}">
       <div class="product-detail-gallery">
         <div class="product-detail-main-image">
           ${mainImg ? `<img src="/uploads/${mainImg.filename}" alt="${p.name}" id="main-product-image">` : '<span style="font-size:80px;opacity:0.3">🎨</span>'}
@@ -412,9 +407,9 @@ async function showProduct(id) {
       <div class="product-detail-info">
         <h2>${p.name}</h2>
         <div class="product-detail-price">
-          <span style="font-size:32px;font-weight:700;color:var(--light-gold)">${formatPrice(p.price)} ₼</span>
-          ${hasDiscount ? `<span style="font-size:20px;color:rgba(240,236,227,0.4);text-decoration:line-through;margin-left:12px">${formatPrice(p.old_price)} ₼</span>
-          <span style="font-size:14px;color:#2ecc71;font-weight:600;margin-left:8px">-${p.discount_percent}%</span>` : ''}
+          <span class="current">${formatPrice(p.price)} ₼</span>
+          ${hasDiscount ? `<span class="old">${formatPrice(p.old_price)} ₼</span>
+          <span class="discount-badge">-${p.discount_percent}%</span>` : ''}
         </div>
         ${p.description ? `<div class="product-detail-description">${p.description}</div>` : ''}
         <div class="product-detail-specs">
@@ -425,89 +420,13 @@ async function showProduct(id) {
           <div class="spec-item"><div class="spec-label">${currentLang === 'az' ? 'Stok' : 'В наличии'}</div><div class="spec-value">${p.stock > 0 ? `${p.stock} ${currentLang === 'az' ? 'əd.' : 'шт.'}` : currentLang === 'az' ? 'Yoxdur' : 'Нет в наличии'}</div></div>
         </div>
         ${p.includes ? `<div style="margin-bottom:24px"><div class="spec-label" style="margin-bottom:8px">${currentLang === 'az' ? 'Komplektasiya' : 'Комплектация'}</div><div style="color:rgba(240,236,227,0.8)">${p.includes}</div></div>` : ''}
-        <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <div class="product-detail-actions">
           <button class="btn btn-primary" onclick="addToCart('${p.id}','${p.name.replace(/'/g, "\\'")}',${p.price})">${t('product_cart')}</button>
           <button class="btn btn-outline" onclick="showSection('catalog')">${t('product_continue')}</button>
         </div>
       </div>
     </div>`;
-    loadProductReviews(id);
   } catch (e) { console.error(e); }
-}
-
-async function loadProductReviews(productId) {
-  try {
-    const res = await fetch(`${API}/products/${productId}/reviews`);
-    const reviews = await res.json();
-    const container = document.getElementById('product-reviews');
-    if (!reviews.length) {
-      container.innerHTML = `<div class="reviews-block"><h3>${currentLang === 'az' ? 'Rəylər' : 'Отзывы'}</h3><p style="color:var(--text-secondary)">${currentLang === 'az' ? 'Hələ rəy yoxdur' : 'Отзывов пока нет'}</p></div>`;
-      return;
-    }
-    const avg = (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1);
-    container.innerHTML = `<div class="reviews-block">
-      <h3>${currentLang === 'az' ? 'Rəylər' : 'Отзывы'} <span style="font-size:16px;color:var(--gold-light)">★ ${avg}</span> <span style="font-size:14px;color:var(--text-secondary)">(${reviews.length})</span></h3>
-      ${reviews.map(r => `<div class="review-card">
-        <div class="review-header">
-          <strong>${r.author}</strong>
-          <span>${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span>
-          <span style="font-size:12px;color:var(--text-secondary)">${new Date(r.created_at).toLocaleDateString()}</span>
-        </div>
-        ${r.text ? `<div class="review-text">${r.text}</div>` : ''}
-      </div>`).join('')}
-      <button class="btn btn-outline" onclick="showReviewForm('${productId}')" style="margin-top:12px">${currentLang === 'az' ? 'Rəy bildir' : 'Оставить отзыв'}</button>
-    </div>`;
-  } catch(e) { console.error(e); }
-}
-
-function showReviewForm(productId) {
-  openModal(`
-    <h3>${currentLang === 'az' ? 'Rəy bildir' : 'Оставить отзыв'}</h3>
-    <form onsubmit="submitReview(event, '${productId}')">
-      <div class="modal-field"><label>${currentLang === 'az' ? 'Adınız' : 'Ваше имя'}</label><input type="text" id="review-author" required></div>
-      <div class="modal-field"><label>${currentLang === 'az' ? 'Telefon' : 'Телефон'}</label><input type="tel" id="review-phone" placeholder="+994 XX XXX XX XX" required></div>
-      <div class="modal-field"><label>${currentLang === 'az' ? 'Qiymət' : 'Оценка'}</label>
-        <select id="review-rating">
-          <option value="5">5 ★★★★★</option>
-          <option value="4">4 ★★★★☆</option>
-          <option value="3">3 ★★★☆☆</option>
-          <option value="2">2 ★★☆☆☆</option>
-          <option value="1">1 ★☆☆☆☆</option>
-        </select>
-      </div>
-      <div class="modal-field"><label>${currentLang === 'az' ? 'Rəy' : 'Отзыв'}</label><textarea id="review-text" rows="4"></textarea></div>
-      <div style="display:flex;gap:8px;margin-top:12px">
-        <button type="submit" class="btn btn-primary">${currentLang === 'az' ? 'Göndər' : 'Отправить'}</button>
-        <button type="button" class="btn btn-outline" onclick="closeModal()">${currentLang === 'az' ? 'Ləğv et' : 'Отмена'}</button>
-      </div>
-    </form>
-  `);
-}
-
-async function submitReview(e, productId) {
-  e.preventDefault();
-  const data = {
-    product_id: productId,
-    author: document.getElementById('review-author').value,
-    phone: document.getElementById('review-phone').value,
-    rating: parseInt(document.getElementById('review-rating').value),
-    text: document.getElementById('review-text').value
-  };
-  try {
-    const res = await fetch(`${API}/reviews`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data)
-    });
-    const result = await res.json();
-    if (result.success) {
-      closeModal();
-      showToast(currentLang === 'az' ? 'Rəy göndərildi!' : 'Отзыв отправлен!');
-      loadProductReviews(productId);
-    } else {
-      showToast(currentLang === 'az' ? 'Xəta baş verdi' : 'Ошибка', 'error');
-    }
-  } catch(e) {
-    showToast(currentLang === 'az' ? 'Xəta baş verdi' : 'Ошибка', 'error');
-  }
 }
 
 // =========== CART (CONTACT-BASED, NO PAYMENT) ===========

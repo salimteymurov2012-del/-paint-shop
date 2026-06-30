@@ -288,49 +288,13 @@ app.get('/api/admin/orders', adminAuth, async (req, res) => {
   res.json(await queryAll(sql, params));
 });
 
-async function sendSMS(phone, message) {
-  const apiKey = process.env.SMS_API_KEY;
-  const apiUrl = process.env.SMS_API_URL || 'https://sms.az/api/send';
-  if (!apiKey) { console.log('SMS not sent: SMS_API_KEY not set'); return; }
-  try {
-    const url = `${apiUrl}?key=${apiKey}&to=${encodeURIComponent(phone)}&text=${encodeURIComponent(message)}`;
-    await fetch(url);
-    console.log(`SMS sent to ${phone}: ${message}`);
-  } catch(e) { console.error('SMS error:', e.message); }
-}
-
 app.put('/api/admin/orders/:id/status', adminAuth, async (req, res) => {
-  const { status } = req.body;
-  await run('UPDATE orders SET status = ? WHERE id = ?', [status, req.params.id]);
-  const order = await queryOne('SELECT * FROM orders WHERE id = ?', [req.params.id]);
-  if (order && status === 'shipped') {
-    const siteName = (await queryOne("SELECT value FROM settings WHERE key = 'site_name'"))?.value || 'Магазин';
-    sendSMS(order.customer_phone, `${siteName}: Ваш заказ #${order.id.slice(-8)} отправлен!`);
-  }
-  if (order && status === 'delivered') {
-    const siteName = (await queryOne("SELECT value FROM settings WHERE key = 'site_name'"))?.value || 'Магазин';
-    const reviewUrl = `${req.protocol}://${req.get('host')}/?review=${order.id}`;
-    sendSMS(order.customer_phone, `${siteName}: Ваш заказ #${order.id.slice(-8)} доставлен! Оставьте отзыв: ${reviewUrl}`);
-  }
+  await run('UPDATE orders SET status = ? WHERE id = ?', [req.body.status, req.params.id]);
   res.json({ success: true });
 });
 
 app.delete('/api/admin/orders/:id', adminAuth, async (req, res) => {
   await run('DELETE FROM orders WHERE id = ?', [req.params.id]);
-  res.json({ success: true });
-});
-
-app.get('/api/admin/reviews', adminAuth, async (req, res) => {
-  res.json(await queryAll('SELECT r.*, p.name as product_name FROM reviews r LEFT JOIN products p ON r.product_id = p.id ORDER BY r.created_at DESC'));
-});
-
-app.put('/api/admin/reviews/:id/approve', adminAuth, async (req, res) => {
-  await run('UPDATE reviews SET is_approved = ? WHERE id = ?', [req.body.approved, req.params.id]);
-  res.json({ success: true });
-});
-
-app.delete('/api/admin/reviews/:id', adminAuth, async (req, res) => {
-  await run('DELETE FROM reviews WHERE id = ?', [req.params.id]);
   res.json({ success: true });
 });
 
@@ -398,27 +362,6 @@ app.get('/api/admin/stats', adminAuth, async (req, res) => {
   }
   const popular = Object.values(countMap).sort((a, b) => b.total - a.total).slice(0, 5);
   res.json({ totalProducts, totalOrders, totalRevenue, totalCustomers, newOrders, popular });
-});
-
-// ======= REVIEWS =======
-app.get('/api/products/:id/reviews', async (req, res) => {
-  const reviews = await queryAll("SELECT r.*, p.name as product_name FROM reviews r LEFT JOIN products p ON r.product_id = p.id WHERE r.product_id = ? AND r.is_approved = 1 ORDER BY r.created_at DESC", [req.params.id]);
-  res.json(reviews);
-});
-
-app.post('/api/reviews', async (req, res) => {
-  const { product_id, author, rating, text, phone } = req.body;
-  if (!product_id || !author || !phone) return res.status(400).json({ error: 'Заполните обязательные поля' });
-  const id = uuidv4();
-  await run('INSERT INTO reviews (id, product_id, author, rating, text, is_approved, created_at) VALUES (?, ?, ?, ?, ?, 0, datetime(\'now\'))', [id, product_id, author, parseInt(rating) || 5, text || '']);
-  res.json({ success: true, id });
-});
-
-app.get('/api/orders/by-phone', async (req, res) => {
-  const { phone } = req.query;
-  if (!phone) return res.json([]);
-  const orders = await queryAll("SELECT * FROM orders WHERE customer_phone = ? AND status = ? ORDER BY created_at DESC", [phone, 'delivered']);
-  res.json(orders);
 });
 
 async function start() {

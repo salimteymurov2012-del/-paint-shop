@@ -76,7 +76,7 @@ function showAdminSection(name) {
 
   const titles = {
     dashboard: 'Дашборд', products: 'Товары', categories: 'Категории',
-    orders: 'Заказы', banners: 'Баннеры', reviews: 'Отзывы',
+    orders: 'Заказы', banners: 'Баннеры',
     promocodes: 'Промокоды', settings: 'Настройки'
   };
   document.getElementById('admin-section-title').textContent = titles[name] || name;
@@ -85,7 +85,7 @@ function showAdminSection(name) {
   if (name === 'categories') renderAdminCategories();
   if (name === 'orders') loadOrders();
   if (name === 'banners') loadBanners();
-  if (name === 'reviews') loadReviews();
+  if (name === 'reviews') {}
   if (name === 'promocodes') loadPromocodes();
   if (name === 'settings') loadSettings();
   if (name === 'dashboard') loadDashboard();
@@ -498,40 +498,6 @@ async function deleteBanner(id) {
   if (!confirm('Удалить баннер?')) return;
   await fetch(`${API}/admin/banners/${id}`, { method: 'DELETE', headers: apiHeaders() });
   loadBanners();
-}
-
-// =========== REVIEWS ===========
-async function loadReviews() {
-  try {
-    const res = await fetch(`${API}/admin/reviews`, { headers: apiHeaders() });
-    const reviews = await res.json();
-    const tbody = document.getElementById('reviews-tbody');
-    tbody.innerHTML = reviews.map(r => `<tr>
-      <td>${r.author}</td>
-      <td style="color:var(--text-secondary)">${r.product_name || '—'}</td>
-      <td>${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</td>
-      <td style="font-size:13px;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.text || '—'}</td>
-      <td><span class="status-badge ${r.is_approved ? 'status-active' : 'status-hidden'}">${r.is_approved ? 'Одобрен' : 'На модерации'}</span></td>
-      <td class="actions">
-        <button class="btn btn-sm btn-outline" onclick="toggleReview('${r.id}', ${r.is_approved ? 0 : 1})">${r.is_approved ? '🙈' : '✅'}</button>
-        <button class="btn btn-sm btn-danger" onclick="deleteReview('${r.id}')">🗑️</button>
-      </td>
-    </tr>`).join('');
-  } catch(e) { console.error(e); }
-}
-
-async function toggleReview(id, approved) {
-  await fetch(`${API}/admin/reviews/${id}/approve`, {
-    method: 'PUT', headers: apiHeaders(),
-    body: JSON.stringify({ approved })
-  });
-  loadReviews();
-}
-
-async function deleteReview(id) {
-  if (!confirm('Удалить отзыв?')) return;
-  await fetch(`${API}/admin/reviews/${id}`, { method: 'DELETE', headers: apiHeaders() });
-  loadReviews();
 }
 
 // =========== PROMOCODES ===========

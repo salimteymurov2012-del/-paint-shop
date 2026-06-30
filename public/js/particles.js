@@ -23,7 +23,7 @@
       this.size = Math.random() * 3 + 1;
       this.speedX = (Math.random() - 0.5) * 0.3;
       this.speedY = (Math.random() - 0.5) * 0.3;
-      this.opacity = Math.random() * 0.6 + 0.1;
+      this.opacity = Math.random() * 0.4 + 0.05;
       this.pulseSpeed = Math.random() * 0.02 + 0.005;
       this.pulseOffset = Math.random() * Math.PI * 2;
       this.color = this.randomColor();
@@ -42,7 +42,7 @@
     update() {
       this.x += this.speedX;
       this.y += this.speedY;
-      this.opacity = (Math.sin(Date.now() * this.pulseSpeed + this.pulseOffset) * 0.3 + 0.5) * (Math.random() * 0.3 + 0.5);
+      this.opacity = (Math.sin(Date.now() * this.pulseSpeed + this.pulseOffset) * 0.2 + 0.3) * (Math.random() * 0.2 + 0.4);
 
       if (this.x < -10 || this.x > width + 10 || this.y < -10 || this.y > height + 10) {
         this.reset();
@@ -58,7 +58,7 @@
       if (this.size > 2) {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size * 3, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${this.color}, ${this.opacity * 0.1})`;
+        ctx.fillStyle = `rgba(${this.color}, ${this.opacity * 0.06})`;
         ctx.fill();
       }
     }
@@ -73,7 +73,7 @@
       this.centerY = Math.random() * height;
       this.size = Math.random() * 2 + 0.5;
       this.speed = (Math.random() * 0.002 + 0.001) * (Math.random() > 0.5 ? 1 : -1);
-      this.color = `rgba(212, 168, 67, ${Math.random() * 0.05})`;
+      this.color = `rgba(212, 168, 67, ${Math.random() * 0.03})`;
     }
     update() {
       this.angle += this.speed;
@@ -92,10 +92,10 @@
   function init() {
     resize();
     particles = [];
-    for (let i = 0; i < 150; i++) {
+    for (let i = 0; i < 80; i++) {
       particles.push(new Particle());
     }
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 12; i++) {
       stars.push(new SwirlParticle());
     }
   }
@@ -118,12 +118,12 @@
         const dx = particles[i].x - particles[j].x;
         const dy = particles[i].y - particles[j].y;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 120) {
+        if (dist < 100) {
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(212, 168, 67, ${0.04 * (1 - dist / 120)})`;
-          ctx.lineWidth = 0.5;
+          ctx.strokeStyle = `rgba(212, 168, 67, ${0.02 * (1 - dist / 100)})`;
+          ctx.lineWidth = 0.4;
           ctx.stroke();
         }
       }
