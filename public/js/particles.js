@@ -35,7 +35,9 @@
         '240, 208, 128',  // light gold
         '139, 92, 246',    // purple
         '255, 255, 255',   // white
-        '74, 123, 181'     // blue
+        '74, 123, 181',    // blue
+        '122, 46, 58',     // burgundy
+        '180, 60, 80'      // light burgundy
       ];
       return colors[Math.floor(Math.random() * colors.length)];
     }
@@ -89,6 +91,40 @@
     }
   }
 
+  // Brush stroke particle — paints burgundy
+  class BrushParticle {
+    constructor() {
+      this.reset();
+    }
+    reset() {
+      this.x = -50;
+      this.y = Math.random() * height;
+      this.speedX = Math.random() * 2 + 1.5;
+      this.speedY = (Math.random() - 0.5) * 0.8;
+      this.size = Math.random() * 6 + 3;
+      this.opacity = Math.random() * 0.12 + 0.04;
+      this.wobble = Math.random() * 0.02;
+      this.offset = Math.random() * 100;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY + Math.sin(Date.now() * this.wobble + this.offset) * 0.5;
+      if (this.x > width + 50) this.reset();
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(122, 46, 58, ${this.opacity})`;
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size * 2.5, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(122, 46, 58, ${this.opacity * 0.3})`;
+      ctx.fill();
+    }
+  }
+
+  let brushes = [];
+
   function init() {
     resize();
     particles = [];
@@ -97,6 +133,10 @@
     }
     for (let i = 0; i < 12; i++) {
       stars.push(new SwirlParticle());
+    }
+    brushes = [];
+    for (let i = 0; i < 10; i++) {
+      brushes.push(new BrushParticle());
     }
   }
 
@@ -110,6 +150,11 @@
     for (const s of stars) {
       s.update();
       s.draw();
+    }
+
+    for (const b of brushes) {
+      b.update();
+      b.draw();
     }
 
     // Connecting lines between nearby particles
