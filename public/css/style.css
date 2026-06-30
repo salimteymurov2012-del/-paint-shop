@@ -635,4 +635,21 @@ img { max-width: 100%; height: auto; display: block; }
   .product-detail-main-image { aspect-ratio: 3/2; }
   .product-detail-info h2 { font-size: 22px; }
   .product-detail-thumbs img { width: 60px; height: 45px; }
+  .reviews-block { padding: 16px 0; }
+  .review-card { padding: 12px; }
 }
+
+/* =========== REVIEWS =========== */
+.reviews-section { padding-bottom: 60px; }
+.reviews-block {
+  background: var(--bg-card); border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg); padding: 32px; margin-top: 32px;
+}
+.reviews-block h3 { font-family: var(--font-display); font-size: 24px; margin-bottom: 24px; }
+.review-card {
+  padding: 16px; border-bottom: 1px solid var(--glass-border);
+  margin-bottom: 8px;
+}
+.review-card:last-child { border-bottom: none; }
+.review-header { display: flex; gap: 12px; align-items: center; margin-bottom: 8px; }
+.review-text { color: rgba(240,236,227,0.8); line-height: 1.6; font-size: 14px; }
