@@ -270,7 +270,7 @@ img { max-width: 100%; height: auto; display: block; }
   position: relative; z-index: 1;
 }
 .features-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
 }
 .feature-card {
   background: var(--card-bg); border: 1px solid var(--glass-border);
