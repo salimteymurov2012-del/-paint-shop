@@ -269,6 +269,8 @@ async function queryReviews(sql, params) {
       if (!m) continue;
       const litMatch = t.match(/=\s*'([^']*)'/);
       if (litMatch) { q = q.eq(m[1], litMatch[1]); continue; }
+      const numMatch = t.match(/=\s*(\d+)/);
+      if (numMatch) { q = q.eq(m[1], parseInt(numMatch[1])); continue; }
       if (params[pIdx] !== undefined) { q = q.eq(m[1], params[pIdx]); pIdx++; }
     }
   }
