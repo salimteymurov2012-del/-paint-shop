@@ -101,8 +101,8 @@
       this.y = Math.random() * height;
       this.speedX = Math.random() * 2 + 1.5;
       this.speedY = (Math.random() - 0.5) * 0.8;
-      this.size = Math.random() * 6 + 3;
-      this.opacity = Math.random() * 0.12 + 0.04;
+      this.size = Math.random() * 12 + 6;
+      this.opacity = Math.random() * 0.3 + 0.15;
       this.wobble = Math.random() * 0.02;
       this.offset = Math.random() * 100;
     }
@@ -135,7 +135,7 @@
       stars.push(new SwirlParticle());
     }
     brushes = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 20; i++) {
       brushes.push(new BrushParticle());
     }
   }

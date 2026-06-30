@@ -87,8 +87,8 @@ body::after {
     radial-gradient(ellipse 90% 90% at 50% 85%, rgba(154, 172, 142, 0.30) 0%, transparent 65%),
     radial-gradient(circle 600px at 20% 50%, rgba(198, 127, 78, 0.20) 0%, transparent 100%),
     radial-gradient(circle 700px at 80% 60%, rgba(184, 148, 90, 0.18) 0%, transparent 100%),
-    radial-gradient(circle 800px at 35% 40%, rgba(122, 46, 58, 0.25) 0%, transparent 70%),
-    radial-gradient(circle 600px at 70% 70%, rgba(122, 46, 58, 0.20) 0%, transparent 65%);
+    radial-gradient(circle 800px at 35% 40%, rgba(122, 46, 58, 0.45) 0%, transparent 65%),
+    radial-gradient(circle 600px at 70% 70%, rgba(122, 46, 58, 0.40) 0%, transparent 60%);
   animation: glow-shift 8s ease-in-out infinite alternate;
 }
 
@@ -129,23 +129,23 @@ body::after {
   animation-duration: 18s;
 }
 .glow-orb:nth-child(4) {
-  width: 900px; height: 900px;
-  top: 60%; left: 10%;
-  background: radial-gradient(circle at center, rgba(122, 46, 58, 0.35) 0%, transparent 70%);
+  width: 1000px; height: 1000px;
+  top: 50%; left: 5%;
+  background: radial-gradient(circle at center, rgba(122, 46, 58, 0.60) 0%, transparent 70%);
   animation-delay: -2s;
   animation-duration: 14s;
 }
 .glow-orb:nth-child(5) {
-  width: 1000px; height: 1000px;
-  top: 40%; left: 55%;
-  background: radial-gradient(circle at center, rgba(122, 46, 58, 0.30) 0%, transparent 70%);
+  width: 1100px; height: 1100px;
+  top: 30%; left: 50%;
+  background: radial-gradient(circle at center, rgba(122, 46, 58, 0.55) 0%, transparent 70%);
   animation-delay: -5s;
   animation-duration: 16s;
 }
 .glow-orb:nth-child(6) {
-  width: 800px; height: 800px;
-  top: 10%; left: 60%;
-  background: radial-gradient(circle at center, rgba(122, 46, 58, 0.25) 0%, transparent 70%);
+  width: 900px; height: 900px;
+  top: 10%; left: 65%;
+  background: radial-gradient(circle at center, rgba(122, 46, 58, 0.50) 0%, transparent 70%);
   animation-delay: -9s;
   animation-duration: 20s;
 }
@@ -196,7 +196,7 @@ img { max-width: 100%; height: auto; display: block; }
 #particles-canvas {
   position: fixed; inset: 0; z-index: 0;
   pointer-events: none;
-  opacity: 0.3;
+  opacity: 0.8;
 }
 
 /* =========== HEADER =========== */
@@ -301,8 +301,12 @@ img { max-width: 100%; height: auto; display: block; }
   background: radial-gradient(circle, rgba(184, 148, 90, 0.05) 0%, transparent 70%);
 }
 .swirl-3 {
-  width: 350px; height: 350px; top: 30%; left: 55%; animation-delay: -9s;
-  background: radial-gradient(circle, rgba(122, 46, 58, 0.04) 0%, transparent 70%);
+  width: 600px; height: 600px; top: 25%; left: 50%; animation-delay: -9s;
+  background: radial-gradient(circle, rgba(122, 46, 58, 0.20) 0%, transparent 70%);
+}
+.swirl-4 {
+  width: 450px; height: 450px; bottom: 5%; right: 15%; animation-delay: -3s;
+  background: radial-gradient(circle, rgba(122, 46, 58, 0.15) 0%, transparent 70%);
 }
 @keyframes swirl-float {
   0%, 100% { transform: translate(0, 0) scale(1); }
@@ -337,8 +341,9 @@ img { max-width: 100%; height: auto; display: block; }
 
 .hero-brushes { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
 .brush-stroke {
-  position: absolute; height: 3px; border-radius: 2px;
-  opacity: 0.08;
+  position: absolute; height: 6px; border-radius: 4px;
+  opacity: 0.2;
+  filter: blur(1px);
 }
 .brush-1 { top: 18%; left: -80px; width: 350px;
   background: linear-gradient(90deg, transparent, var(--accent-terracotta), transparent);
@@ -346,19 +351,19 @@ img { max-width: 100%; height: auto; display: block; }
 .brush-2 { bottom: 30%; right: -80px; width: 300px;
   background: linear-gradient(90deg, transparent, var(--accent-olive), transparent);
   animation: brush-sweep 12s ease-in-out infinite 3s; }
-.brush-3 { top: 55%; left: 55%; width: 200px;
-  background: linear-gradient(90deg, transparent, var(--accent-burgundy), transparent);
+.brush-3 { top: 55%; left: 55%; width: 300px; height: 8px;
+  background: linear-gradient(90deg, transparent, rgba(122, 46, 58, 0.45), transparent);
   animation: brush-sweep 8s ease-in-out infinite 5s; }
-.brush-4 { top: 75%; left: -60px; width: 400px; height: 5px;
-  background: linear-gradient(90deg, transparent, rgba(122, 46, 58, 0.25), transparent);
+.brush-4 { top: 75%; left: -60px; width: 500px; height: 10px;
+  background: linear-gradient(90deg, transparent, rgba(122, 46, 58, 0.50), transparent);
   animation: brush-sweep 12s ease-in-out infinite 1s; }
-.brush-5 { top: 10%; left: -40px; width: 500px; height: 4px;
-  background: linear-gradient(90deg, transparent, rgba(122, 46, 58, 0.20), transparent);
+.brush-5 { top: 10%; left: -40px; width: 600px; height: 8px;
+  background: linear-gradient(90deg, transparent, rgba(122, 46, 58, 0.40), transparent);
   animation: brush-sweep 15s ease-in-out infinite 7s; }
 @keyframes brush-sweep {
   0%, 100% { transform: translateX(-100px) rotate(-15deg); opacity: 0; }
-  25% { opacity: 0.12; }
-  50% { transform: translateX(calc(100vw + 100px)) rotate(15deg); opacity: 0.06; }
+  25% { opacity: 0.35; }
+  50% { transform: translateX(calc(100vw + 100px)) rotate(15deg); opacity: 0.20; }
   75% { opacity: 0; }
 }
 
@@ -367,7 +372,7 @@ img { max-width: 100%; height: auto; display: block; }
   position: fixed;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.15;
+  opacity: 0.35;
   animation: drip-fall 6s ease-in infinite;
 }
 .paint-drip:nth-child(7) {
