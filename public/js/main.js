@@ -298,7 +298,7 @@ function renderBlock(title, products) {
           const imgSrc = p.image ? `/uploads/${p.image}` : null;
           return `<div class="home-product-card" onclick="showProduct('${p.id}')">
             <div class="hp-image">
-              ${imgSrc ? `<img src="${imgSrc}" alt="${p.name}" loading="lazy">` : '<span class="placeholder-icon">🎨</span>'}
+        ${imgSrc ? `<img src="${imgSrc}" alt="${p.name.replace(/"/g, '&quot;')}" loading="lazy">` : '<span class="placeholder-icon">🎨</span>'}
             </div>
             <div class="hp-info">
               <div class="hp-name">${p.name}</div>
@@ -398,7 +398,7 @@ async function showProduct(id) {
     container.innerHTML = `<div class="product-detail${p.images && p.images.length ? ' gallery-loaded' : ''}">
       <div class="product-detail-gallery">
         <div class="product-detail-main-image">
-          ${mainImg ? `<img src="/uploads/${mainImg.filename}" alt="${p.name}" id="main-product-image">` : '<span style="font-size:80px;opacity:0.3">🎨</span>'}
+          ${mainImg ? `<img src="/uploads/${mainImg.filename}" alt="${p.name.replace(/"/g, '&quot;')}" id="main-product-image">` : '<span style="font-size:80px;opacity:0.3">🎨</span>'}
         </div>
         ${p.images && p.images.length > 1 ? `<div class="product-detail-thumbs">
           ${p.images.map(img => `<img src="/uploads/${img.filename}" class="${img.is_main ? 'active' : ''}" onclick="document.getElementById('main-product-image').src='/uploads/${img.filename}';document.querySelectorAll('.product-detail-thumbs img').forEach(el=>el.classList.remove('active'));this.classList.add('active')">`).join('')}
@@ -414,7 +414,7 @@ async function showProduct(id) {
             <span class="discount-badge">-${p.discount_percent}%</span>` : ''}
           </div>
           <div class="purchase-actions">
-            <button class="btn btn-primary" onclick="addToCart('${p.id}','${p.name.replace(/'/g, "\\'")}',${p.price})">${t('product_cart')}</button>
+            <button class="btn btn-primary" onclick="addToCart('${p.id}','${p.name.replace(/'/g, "\\'").replace(/"/g, '&quot;')}',${p.price})">${t('product_cart')}</button>
             <button class="btn btn-outline" onclick="showSection('catalog')">${t('product_continue')}</button>
           </div>
           <div class="purchase-specs">
@@ -481,7 +481,7 @@ function renderCart() {
           const imgSrc = img ? `/uploads/${img.filename}` : null;
           return `<div class="cart-item">
             <div class="cart-item-img">
-              ${imgSrc ? `<img src="${imgSrc}" alt="${item.name}">` : '<span>🎨</span>'}
+              ${imgSrc ? `<img src="${imgSrc}" alt="${item.name.replace(/"/g, '&quot;')}">` : '<span>🎨</span>'}
             </div>
             <div class="cart-item-info">
               <h4>${item.name}</h4>
